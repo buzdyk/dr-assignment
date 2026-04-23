@@ -1,0 +1,178 @@
+#!/bin/bash
+
+# Regenerate todo index tables from per-file YAML frontmatter.
+# Reads: docs/todos/{active,backlog,icebox,completed}/*.md
+# Writes: the region between <!-- GENERATED:START --> and <!-- GENERATED:END -->
+# inside each folder's index file and the top-level docs/todos/index.md summary.
+#
+# Each todo file's frontmatter should look like:
+#   ---
+#   type: todo
+#   status: pending | icebox | done
+#   description: one-line summary shown in the index
+#   reason: why-it-is-frozen (icebox only)
+#   ---
+
+set -e
+
+ROOT="$(git rev-parse --show-toplevel)"
+TODOS_DIR="$ROOT/docs/todos"
+
+extract_field() {
+    local file="$1" field="$2"
+    awk -v field="$field" '
+        BEGIN { in_fm = 0 }
+        /^---[[:space:]]*$/ {
+            if (in_fm == 0) { in_fm = 1; next }
+            else { exit }
+        }
+        in_fm == 1 {
+            pos = index($0, ":")
+            if (pos > 0) {
+                key = substr($0, 1, pos-1)
+                val = substr($0, pos+1)
+                sub(/^[[:space:]]+/, "", key)
+                sub(/[[:space:]]+$/, "", key)
+                sub(/^[[:space:]]+/, "", val)
+                sub(/[[:space:]]+$/, "", val)
+                if (key == field) { print val; exit }
+            }
+        }
+    ' "$file"
+}
+
+generate_index() {
+    local dir="$1" index_file="$2" kind="$3"
+    local header rows="" f base type desc status reason
+
+    case "$kind" in
+        active)
+            header=$'| Todo | Description | Status |\n|------|-------------|--------|'
+            ;;
+        backlog)
+            header=$'| Todo | Description |\n|------|-------------|'
+            ;;
+        icebox)
+            header=$'| Todo | Description | Reason |\n|------|-------------|--------|'
+            ;;
+        completed)
+            header=$'| Todo | Description |\n|------|-------------|'
+            ;;
+    esac
+
+    shopt -s nullglob
+    for f in "$dir"/*.md; do
+        base=$(basename "$f" .md)
+        [ "$f" = "$index_file" ] && continue
+        type=$(extract_field "$f" "type")
+        [ -z "$type" ] && continue
+
+        desc=$(extract_field "$f" "description")
+        case "$kind" in
+            active)
+                status=$(extract_field "$f" "status")
+                rows+="| [$base](./$base.md) | $desc | $status |"$'\n'
+                ;;
+            backlog|completed)
+                rows+="| [$base](./$base.md) | $desc |"$'\n'
+                ;;
+            icebox)
+                reason=$(extract_field "$f" "reason")
+                rows+="| [$base](./$base.md) | $desc | $reason |"$'\n'
+                ;;
+        esac
+    done
+
+    if [ ! -f "$index_file" ]; then
+        echo "warning: $index_file does not exist, skipping" >&2
+        return
+    fi
+
+    if ! grep -q "<!-- GENERATED:START -->" "$index_file"; then
+        echo "warning: $index_file has no GENERATED region, skipping" >&2
+        return
+    fi
+
+    local tmp
+    tmp=$(mktemp)
+    TODOS_INDEX_BLOCK="${header}"$'\n'"${rows}" \
+    awk '
+        /<!-- GENERATED:START -->/ {
+            print
+            printf "%s", ENVIRON["TODOS_INDEX_BLOCK"]
+            in_gen = 1
+            next
+        }
+        /<!-- GENERATED:END -->/ {
+            in_gen = 0
+            print
+            next
+        }
+        !in_gen { print }
+    ' "$index_file" > "$tmp"
+    mv "$tmp" "$index_file"
+    echo "updated $index_file"
+}
+
+count_items() {
+    local dir="$1" f type n=0
+    shopt -s nullglob
+    for f in "$dir"/*.md; do
+        [ "$f" = "$dir/$(basename "$dir" | tr '[:lower:]' '[:upper:]').md" ] && continue
+        type=$(extract_field "$f" "type")
+        [ -n "$type" ] && n=$((n + 1))
+    done
+    echo "$n"
+}
+
+generate_summary() {
+    local index_file="$TODOS_DIR/index.md"
+    local active_n backlog_n icebox_n completed_n
+    active_n=$(count_items "$TODOS_DIR/active")
+    backlog_n=$(count_items "$TODOS_DIR/backlog")
+    icebox_n=$(count_items "$TODOS_DIR/icebox")
+    completed_n=$(count_items "$TODOS_DIR/completed")
+
+    local header rows
+    header=$'| Bucket | Description | Count |\n|--------|-------------|-------|'
+    rows=""
+    rows+="| [Active](./active/ACTIVE.md) | Work in progress or queued for the current cycle | $active_n |"$'\n'
+    rows+="| [Backlog](./backlog/BACKLOG.md) | Future work, not yet scheduled | $backlog_n |"$'\n'
+    rows+="| [Icebox](./icebox/ICEBOX.md) | Deferred indefinitely | $icebox_n |"$'\n'
+    rows+="| [Completed](./completed/COMPLETED.md) | Archive of finished work | $completed_n |"$'\n'
+
+    if [ ! -f "$index_file" ]; then
+        echo "warning: $index_file does not exist, skipping" >&2
+        return
+    fi
+    if ! grep -q "<!-- GENERATED:START -->" "$index_file"; then
+        echo "warning: $index_file has no GENERATED region, skipping" >&2
+        return
+    fi
+
+    local tmp
+    tmp=$(mktemp)
+    TODOS_INDEX_BLOCK="${header}"$'\n'"${rows}" \
+    awk '
+        /<!-- GENERATED:START -->/ {
+            print
+            printf "%s", ENVIRON["TODOS_INDEX_BLOCK"]
+            in_gen = 1
+            next
+        }
+        /<!-- GENERATED:END -->/ {
+            in_gen = 0
+            print
+            next
+        }
+        !in_gen { print }
+    ' "$index_file" > "$tmp"
+    mv "$tmp" "$index_file"
+    echo "updated $index_file"
+}
+
+generate_index "$TODOS_DIR/active"    "$TODOS_DIR/active/ACTIVE.md"       active
+generate_index "$TODOS_DIR/backlog"   "$TODOS_DIR/backlog/BACKLOG.md"     backlog
+generate_index "$TODOS_DIR/icebox"    "$TODOS_DIR/icebox/ICEBOX.md"       icebox
+generate_index "$TODOS_DIR/completed" "$TODOS_DIR/completed/COMPLETED.md" completed
+generate_summary

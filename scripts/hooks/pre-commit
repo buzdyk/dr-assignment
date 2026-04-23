@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Pre-commit hook - regenerate todo index tables if any todo file is staged
+set -e
+
+ROOT="$(git rev-parse --show-toplevel)"
+
+if ! git diff --cached --name-only | grep -q '^docs/todos/.*\.md$'; then
+    exit 0
+fi
+
+"$ROOT/scripts/todos-index" > /dev/null
+
+for f in \
+    docs/todos/index.md \
+    docs/todos/active/ACTIVE.md \
+    docs/todos/backlog/BACKLOG.md \
+    docs/todos/icebox/ICEBOX.md \
+    docs/todos/completed/COMPLETED.md
+do
+    if [ -f "$ROOT/$f" ] && ! git diff --quiet -- "$ROOT/$f"; then
+        git add "$ROOT/$f"
+    fi
+done
