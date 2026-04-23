@@ -73,3 +73,18 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+## Database migrations
+
+Postgres schema is managed with [Kysely](https://kysely.dev/) + [`kysely-ctl`](https://github.com/kysely-org/kysely-ctl). Config lives in `kysely.config.ts`; migrations in `db/migrations/`; the hand-maintained `Database` TS interface in `db/types.ts`.
+
+Set `DATABASE_URL` (defaults to `postgres://postgres:postgres@localhost:5432/nextrade`), then:
+
+```bash
+npm run db:migrate           # apply all pending migrations
+npm run db:migrate:list      # show completed + pending
+npm run db:migrate:down      # rollback the last migration
+npm run db:migrate:make <name>  # scaffold a new migration
+```
+
+Every schema change must also be mirrored in `db/types.ts`.
