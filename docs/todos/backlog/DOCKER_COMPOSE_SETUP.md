@@ -1,13 +1,13 @@
 ---
 type: todo
-status: pending
+status: backlog
 description: Dockerfile and docker-compose.yml for one-line project setup
 ---
 # Docker Compose Setup
 
 ## Problem
 
-MVP calls for a one-line setup. We need a Dockerfile for the Nuxt app and a `docker-compose.yml` so `docker compose up` boots the whole project. See [[004-DOCKER_COMPOSE]].
+MVP calls for a one-line setup. We need a Dockerfile for the Nuxt app and a `docker-compose.yml` so `docker compose up` boots the whole project. See [[../../adr/004-DOCKER_COMPOSE]].
 
 ## Approach
 
@@ -18,5 +18,5 @@ MVP calls for a one-line setup. We need a Dockerfile for the Nuxt app and a `doc
 
 ## Related
 
-- [[004-DOCKER_COMPOSE]]
+- [[../../adr/004-DOCKER_COMPOSE]]
 - [[SCAFFOLD_NUXT_APP]]

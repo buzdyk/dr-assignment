@@ -7,7 +7,7 @@ description: Scaffold the Nuxt project skeleton (pages + server routes)
 
 ## Problem
 
-We need the base Nuxt project that will host both the frontend UI and the server routes for the Claude proxy / SSE endpoint. See [[001-NUXT_FULL_STACK]].
+We need the base Nuxt project that will host both the frontend UI and the server routes for the Claude proxy / SSE endpoint. See [[../../adr/001-NUXT_FULL_STACK]].
 
 ## Approach
 
@@ -18,5 +18,4 @@ We need the base Nuxt project that will host both the frontend UI and the server
 
 ## Related
 
-- [[001-NUXT_FULL_STACK]]
-- [[LAUNCH]]
+- [[../../adr/001-NUXT_FULL_STACK]]

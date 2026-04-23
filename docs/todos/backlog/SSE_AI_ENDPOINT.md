@@ -1,13 +1,13 @@
 ---
 type: todo
-status: pending
+status: backlog
 description: Nuxt server route that streams Claude responses over SSE
 ---
 # SSE AI Endpoint
 
 ## Problem
 
-The frontend needs to render Claude output token-by-token. We need a Nuxt server route that calls the Anthropic SDK in streaming mode and re-emits tokens as SSE events. See [[003-SSE_FOR_AI_STREAMING]].
+The frontend needs to render Claude output token-by-token. We need a Nuxt server route that calls the Anthropic SDK in streaming mode and re-emits tokens as SSE events. See [[../../adr/003-SSE_FOR_AI_STREAMING]].
 
 ## Approach
 
@@ -18,6 +18,6 @@ The frontend needs to render Claude output token-by-token. We need a Nuxt server
 
 ## Related
 
-- [[003-SSE_FOR_AI_STREAMING]]
-- [[002-BYOK_CLAUDE]]
+- [[../../adr/003-SSE_FOR_AI_STREAMING]]
+- [[../../adr/002-BYOK_CLAUDE]]
 - [[BYOK_KEY_HANDLING]]

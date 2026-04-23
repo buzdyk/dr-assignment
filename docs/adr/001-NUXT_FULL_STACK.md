@@ -17,4 +17,4 @@ Use Nuxt as the single full-stack framework. Pages render the UI; Nitro server r
 ## Consequences
 - One app, one Dockerfile, one dev server — aligns with the "one-line setup" MVP goal.
 - Server routes and the UI share types and utilities directly.
-- We're coupled to the Nuxt/Nitro request lifecycle for SSE — if we later need long-lived connections or heavier backend work, we may have to extract a dedicated service.
+- Frontend and backend scale together. If later growth needs them on separate footprints, the Nitro server routes can be extracted into a standalone Nitro app without rewriting — but not for free.

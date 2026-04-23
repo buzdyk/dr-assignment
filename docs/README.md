@@ -1,5 +1,7 @@
 # Docs
 
+This repo is a test assignment for Diverted River (DR). MVP is a one-line Docker Compose project with BYOK Claude integration.
+
 The **project is the docs**. Specs come before code; code is generated from specs; docs are the source of truth and kept tidy.
 
 Primary reader is [SilverBullet](https://silverbullet.md); Obsidian is a secondary reader. Wiki-link navigation assumes SilverBullet/Obsidian semantics.
@@ -7,7 +9,6 @@ Primary reader is [SilverBullet](https://silverbullet.md); Obsidian is a seconda
 ## Index
 
 - [GLOSSARY](./GLOSSARY) — shared vocabulary
-- [LAUNCH](./LAUNCH) — launch plan and stages
 - [adr/](./adr/ADR) — architecture decision records (numbered, append-only)
 - [devlog/](./devlog/DEVLOG) — daily dev log entries
 - [reading/](./reading/READING) — research notes
@@ -48,12 +49,9 @@ date: 2026-02-25                                    # devlog entries only
 - Prefer `[[wiki]]` for cross-doc references. Use `[text](./path)` when display text differs from the target page name.
 - Keep `.md` in prose/backticks when describing *filenames on disk* — those are not links.
 
-## Todo Lifecycle
+## Todos
 
-1. **New work** starts as a file in `todos/active/`.
-2. **When done**, move to `todos/completed/`, set `status: done`, add a "What Was Done" section with commit references.
-3. **Deferred work** moves to `todos/icebox/` with a `reason:` frontmatter field.
-4. **Future ideas** go straight to `todos/backlog/`.
+Completed todos get a "What Was Done" section appended before moving to `todos/completed/`.
 
 The indexes (`ACTIVE.md`, `BACKLOG.md`, `ICEBOX.md`, `COMPLETED.md`, `todos/index.md`) are regenerated from frontmatter by `scripts/todos-index`, wired into the pre-commit hook.
 

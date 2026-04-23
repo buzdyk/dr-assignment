@@ -17,5 +17,5 @@ Use Anthropic's Claude as a managed LLM, accessed in Bring-Your-Own-Key (BYOK) m
 ## Consequences
 - No secrets to ship, rotate, or leak in the repo — the app is safe to clone and run.
 - Each reviewer pays for their own tokens; no billing concerns on our side.
-- The key has to be handed from the browser to the server securely for each request (e.g. request header, session-scoped storage) — not persisted server-side.
+- Key lives in the server-side `ANTHROPIC_API_KEY` env var.
 - We rely on Anthropic's availability and rate limits; no fallback provider in MVP.
