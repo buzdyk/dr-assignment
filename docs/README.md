@@ -40,6 +40,7 @@ date: 2026-02-25                                    # devlog entries only
 ```
 
 `description`, `status`, and `reason` on todo files feed the generated index tables (`scripts/todos-index`) — keep them current.
+Don't run `scripts/todos-index` manually unless asked to.
 
 ### Cross-references
 
