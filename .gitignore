@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+
+# Editor / IDE
+.obsidian/
+.vscode/
+.idea/
+
+# Claude Code — per-user settings (commit .claude/commands and shared settings if added later)
+.claude/settings.local.json
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Node / Nuxt
+node_modules/
+.nuxt/
+.output/
+dist/
+.cache/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

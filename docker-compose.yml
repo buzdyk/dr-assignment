@@ -1,0 +1,53 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-nextrade}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-nextrade}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  app:
+    build:
+      context: ./demo
+      target: runtime
+    environment:
+      NITRO_PORT: ${PORT:-3455}
+      NITRO_HOST: 0.0.0.0
+      DATABASE_URL: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-nextrade}
+    ports:
+      - "${PORT:-3455}:${PORT:-3455}"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  dev:
+    profiles: ["dev"]
+    build:
+      context: ./demo
+      target: dev
+    environment:
+      NUXT_PORT: ${PORT:-3455}
+      NUXT_HOST: 0.0.0.0
+      CHOKIDAR_USEPOLLING: "true"
+      DATABASE_URL: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-nextrade}
+    ports:
+      - "${PORT:-3455}:${PORT:-3455}"
+    volumes:
+      - ./demo:/app
+      - /app/node_modules
+      - /app/.nuxt
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db-data:
