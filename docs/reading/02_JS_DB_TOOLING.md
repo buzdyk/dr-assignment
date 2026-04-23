@@ -16,7 +16,7 @@ Scope: TS/Node backends against a relational database (Postgres / MySQL / SQLite
 |---|---|---|---|---|---|
 | **Drizzle** | Query builder + relational helper | `drizzle-kit` — bundled | None; custom scripts | TS files | Excellent |
 | **Prisma** | Typed generated client | `prisma migrate` — bundled | `prisma db seed` hook (runs any script) | `schema.prisma` DSL | Excellent |
-| **Kysely** | Query builder (pure) | No bundled migrator; `@kysely/kysely-ctl` or community CLIs | None; custom scripts | Hand-written or codegen'd `Database` interface | Excellent |
+| **Kysely** | Query builder (pure) | No bundled migrator; `kysely-ctl` or community CLIs | None; custom scripts | Hand-written or codegen'd `Database` interface | Excellent |
 | **MikroORM** | ORM (Data Mapper) | `@mikro-orm/migrations` — bundled | `@mikro-orm/seeder` — bundled | Entity classes (decorators) | Good |
 | **TypeORM** | ORM (AR or DM modes) | TypeORM CLI — bundled | No first-party seeder; community libs | Entity classes (decorators) | OK |
 | **Sequelize** | ORM (Active Record) | `sequelize-cli` — bundled | `sequelize-cli db:seed` — bundled | Model classes | Weak |
@@ -52,7 +52,7 @@ Quick reads from the matrix:
 ### Kysely
 
 - Pure query builder. No schema definition baked in — you define a `Database` TS interface (hand-written or generated via `kysely-codegen`) and Kysely infers everything from there.
-- **Migrations:** no bundled CLI; `@kysely/kysely-ctl` is the official-ish newer CLI (migrate + seed commands). Community predecessors like `kysely-migration-cli` are still around.
+- **Migrations:** no bundled CLI; `kysely-ctl` is the official-ish newer CLI (migrate + seed commands). Community predecessors like `kysely-migration-cli` are still around.
 - **Seeders:** same story — scaffolded by kysely-ctl if you use it; otherwise custom scripts.
 - Best TS inference in the ecosystem for handwritten queries.
 

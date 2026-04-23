@@ -1,13 +1,13 @@
 ---
 type: todo
 status: pending
-description: Wire the NexTrade schema into Kysely migrations via @kysely/kysely-ctl
+description: Wire the NexTrade schema into Kysely migrations via kysely-ctl
 ---
 # DB Migrations
 
 ## Problem
 
-The NexTrade database schema needs to be set up via Kysely migrations scaffolded by `@kysely/kysely-ctl`. Schema is fixed and specified in `docs/artefacts/Database schema.png`.
+The NexTrade database schema needs to be set up via Kysely migrations scaffolded by `kysely-ctl`. Schema is fixed and specified in `docs/artefacts/Database schema.png`.
 
 ## Source of truth
 

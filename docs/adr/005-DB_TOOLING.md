@@ -3,7 +3,7 @@ type: adr
 status: accepted
 date: 2026-04-23
 ---
-# ADR-005: Database tooling — Kysely + @kysely/kysely-ctl
+# ADR-005: Database tooling — Kysely + kysely-ctl
 
 ## Status
 Accepted
@@ -21,7 +21,7 @@ Active-Record-with-models ORMs have no TS-first, well-maintained, Nuxt-friendly 
 ## Decision
 
 - **Query layer:** [Kysely](https://kysely.dev/).
-- **Migrations + seeders:** `@kysely/kysely-ctl` (first-party CLI that wraps Kysely's built-in `Migrator` plus a seeder runner).
+- **Migrations + seeders:** [`kysely-ctl`](https://github.com/kysely-org/kysely-ctl) (first-party CLI that wraps Kysely's built-in `Migrator` plus a seeder runner).
 
 ## Why Kysely
 
@@ -30,7 +30,7 @@ Active-Record-with-models ORMs have no TS-first, well-maintained, Nuxt-friendly 
 - No ORM, no codegen, no DSL, no binary engine — just a query builder and TS types.
 - Minimal runtime footprint: Kysely + the Postgres driver is effectively the whole stack.
 - Best TS inference in the ecosystem for handwritten queries — types flow through composition, inserts/updates/selects are distinctly typed via `Insertable<T>`, `Updateable<T>`, `Selectable<T>`.
-- `@kysely/kysely-ctl` keeps migrations and seeders in one first-party tool, with TS migration files and typed seed scripts using the same Kysely instance.
+- `kysely-ctl` keeps migrations and seeders in one first-party tool, with TS migration files and typed seed scripts using the same Kysely instance.
 - Cheap to rip out: Kysely produces plain SQL, the schema lives in migration files — nothing locks us in.
 
 ## Alternatives considered
