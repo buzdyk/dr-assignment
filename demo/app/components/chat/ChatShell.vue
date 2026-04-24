@@ -24,10 +24,6 @@ defineExpose({ scrollEl })
       class="flex items-center justify-between gap-4 border-b border-[color:var(--color-hairline)] px-5 py-3"
     >
       <div class="flex items-center gap-3">
-        <span
-          aria-hidden="true"
-          class="inline-block h-2 w-2 rounded-full bg-[color:var(--color-accent)] shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-accent)_25%,transparent)]"
-        />
         <h2
           v-if="title"
           class="text-[length:var(--text-h3)] font-bold leading-none tracking-[-0.035em]"

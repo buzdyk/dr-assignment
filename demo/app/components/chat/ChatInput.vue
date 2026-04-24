@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ArrowRight } from 'lucide-vue-next'
 import { useTemplateRef } from 'vue'
 
 type Props = {
@@ -83,13 +82,13 @@ const ROBOT_PROMPTS = [
         @keydown="onKeydown"
       />
       <Button
-        variant="primary"
+        variant="ai"
         size="sm"
         :disabled="disabled || modelValue.trim().length === 0"
         aria-label="Send message"
         @click="onSend"
       >
-        <ArrowRight :size="16" :stroke-width="2" />
+        AI Generate
       </Button>
     </div>
 

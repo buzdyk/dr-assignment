@@ -4,6 +4,23 @@ import { marked } from 'marked'
 useHead({ title: 'Chat · NexTrade' })
 
 marked.setOptions({ gfm: true, breaks: true })
+// marked's default GFM tokenizer treats a single `~text~` as strikethrough,
+// which mangles prose like "~$17.8K ... ~($14.2K)" where the model uses `~`
+// to mean "approximately". GFM spec requires `~~`, so restrict to that.
+marked.use({
+  tokenizer: {
+    del(src: string) {
+      const match = /^~~(?=\S)([\s\S]*?\S)~~/.exec(src)
+      if (!match) return undefined
+      return {
+        type: 'del',
+        raw: match[0],
+        text: match[1]!,
+        tokens: this.lexer.inlineTokens(match[1]!),
+      }
+    },
+  },
+})
 
 function renderMarkdown(md: string): string {
   return marked.parse(md, { async: false }) as string
@@ -302,8 +319,9 @@ function parseFrameData(frame: string): string | null {
                 <div class="flex flex-col gap-3">
                   <p
                     v-if="turn.assistant.blocks.length === 0"
-                    class="font-mono text-[length:var(--text-label)] uppercase tracking-[0.08em] text-[color:var(--color-muted-foreground)]"
+                    class="flex items-center gap-2.5 font-mono text-[length:var(--text-label)] uppercase tracking-[0.08em] text-[color:var(--color-muted-foreground)]"
                   >
+                    <span aria-hidden="true" class="ai-blob" />
                     thinking…
                   </p>
 
@@ -409,5 +427,35 @@ function parseFrameData(frame: string): string | null {
   margin: 1em 0;
   border: 0;
   border-top: 1px solid var(--color-hairline, rgba(0, 0, 0, 0.15));
+}
+
+.ai-blob {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background: var(--color-accent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--color-accent) 55%, transparent);
+  animation: ai-blob-wobble 1.6s ease-in-out infinite;
+}
+@keyframes ai-blob-wobble {
+  0%, 100% {
+    border-radius: 48% 52% 55% 45% / 50% 48% 52% 50%;
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  25% {
+    border-radius: 58% 42% 40% 60% / 45% 60% 40% 55%;
+    transform: translateY(-1px) rotate(6deg) scale(1.08);
+  }
+  50% {
+    border-radius: 42% 58% 60% 40% / 58% 42% 55% 45%;
+    transform: translateY(1px) rotate(-4deg) scale(0.95);
+  }
+  75% {
+    border-radius: 55% 45% 48% 52% / 42% 58% 45% 55%;
+    transform: translateY(-1px) rotate(3deg) scale(1.05);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ai-blob { animation: none; }
 }
 </style>
