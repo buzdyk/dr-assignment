@@ -1,5 +1,13 @@
 <script setup lang="ts">
+import { marked } from 'marked'
+
 useHead({ title: 'Chat · NexTrade' })
+
+marked.setOptions({ gfm: true, breaks: true })
+
+function renderMarkdown(md: string): string {
+  return marked.parse(md, { async: false }) as string
+}
 
 // Mirrors demo/db/seed-data.ts (SUPPLIER_1_ID / SUPPLIER_2_ID) — duplicated
 // here so the seed module stays server-side and isn't bundled into the client.
@@ -303,12 +311,12 @@ function parseFrameData(frame: string): string | null {
                     v-for="(block, j) in turn.assistant.blocks"
                     :key="`text-${j}`"
                   >
-                    <p
+                    <div
                       v-if="block.kind === 'text'"
-                      class="text-[length:var(--text-body)] leading-[var(--text-body--line-height)] whitespace-pre-wrap"
-                    >
-                      {{ block.text }}
-                    </p>
+                      class="markdown-body text-[length:var(--text-body)] leading-[var(--text-body--line-height)]"
+                      v-html="renderMarkdown(block.text)"
+                    />
+
                     <p
                       v-else-if="block.kind === 'error'"
                       class="rounded-[var(--radius-card)] border border-[color:var(--color-hairline)] bg-[color:var(--color-background)] px-3 py-2 text-[length:var(--text-small)] text-[color:var(--color-destructive,#c0392b)]"
@@ -321,28 +329,14 @@ function parseFrameData(frame: string): string | null {
                     v-for="(block, j) in turn.assistant.blocks"
                     :key="`tool-${j}`"
                   >
-                    <div
+                    <ToolCard
                       v-if="block.kind === 'tool'"
-                      class="flex flex-col gap-2 rounded-[var(--radius-card)] border border-[color:var(--color-hairline)] bg-[color:var(--color-background)] px-3 py-2"
-                    >
-                      <div class="flex items-center justify-between gap-3">
-                        <Label>{{ block.name }}</Label>
-                        <Label>{{ block.status }}</Label>
-                      </div>
-                      <p
-                        v-if="block.overview"
-                        class="text-[length:var(--text-small)]"
-                      >
-                        {{ block.overview }}
-                      </p>
-                      <ResultChart
-                        v-if="block.status === 'done' && block.chart && block.rows && block.rows.length"
-                        :kind="block.chart.kind"
-                        :x-key="block.chart.x"
-                        :y-key="block.chart.y"
-                        :rows="block.rows"
-                      />
-                    </div>
+                      :name="block.name"
+                      :status="block.status"
+                      :overview="block.overview"
+                      :rows="block.rows"
+                      :chart="block.chart"
+                    />
                   </template>
                 </div>
               </ChatMessage>
@@ -362,3 +356,58 @@ function parseFrameData(frame: string): string | null {
     </section>
   </main>
 </template>
+
+<style>
+.markdown-body > :first-child { margin-top: 0; }
+.markdown-body > :last-child { margin-bottom: 0; }
+.markdown-body p { margin: 0 0 0.6em; }
+.markdown-body p:last-child { margin-bottom: 0; }
+.markdown-body strong { font-weight: 600; }
+.markdown-body em { font-style: italic; }
+.markdown-body ul,
+.markdown-body ol { margin: 0 0 0.6em; padding-left: 1.25em; }
+.markdown-body li { margin: 0.15em 0; }
+.markdown-body code {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.9em;
+  padding: 0.1em 0.3em;
+  background: var(--color-muted, rgba(0, 0, 0, 0.05));
+  border-radius: var(--radius-xs, 3px);
+}
+.markdown-body pre {
+  margin: 0 0 0.6em;
+  padding: 0.6em 0.8em;
+  background: var(--color-muted, rgba(0, 0, 0, 0.05));
+  border-radius: var(--radius-card, 6px);
+  overflow-x: auto;
+}
+.markdown-body pre code { background: transparent; padding: 0; }
+.markdown-body table {
+  border-collapse: collapse;
+  margin: 0.4em 0 0.8em;
+  width: 100%;
+  font-size: 0.95em;
+}
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid var(--color-hairline, rgba(0, 0, 0, 0.1));
+  padding: 0.35em 0.6em;
+  text-align: left;
+}
+.markdown-body th {
+  font-weight: 600;
+  background: var(--color-muted, rgba(0, 0, 0, 0.03));
+}
+.markdown-body a { text-decoration: underline; }
+.markdown-body blockquote {
+  margin: 0 0 0.6em;
+  padding-left: 0.8em;
+  border-left: 2px solid var(--color-hairline, rgba(0, 0, 0, 0.15));
+  color: var(--color-muted-foreground, inherit);
+}
+.markdown-body hr {
+  margin: 1em 0;
+  border: 0;
+  border-top: 1px solid var(--color-hairline, rgba(0, 0, 0, 0.15));
+}
+</style>

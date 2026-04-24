@@ -10,7 +10,7 @@ defineProps<Props>()
   <div :class="cn('flex w-full', role === 'user' ? 'justify-end' : 'justify-start')">
     <div
       v-if="role === 'user'"
-      class="max-w-[80%] rounded-[var(--radius-card)] bg-[color:var(--color-foreground)] px-4 py-3 text-[length:var(--text-body)] leading-[var(--text-body--line-height)] text-white"
+      class="max-w-[80%] rounded-[var(--radius-card)] bg-[color:var(--color-foreground)] px-4 py-3 text-[length:var(--text-body)] leading-[var(--text-body--line-height)] whitespace-pre-wrap text-white"
     >
       <slot />
     </div>

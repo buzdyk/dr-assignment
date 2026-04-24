@@ -57,6 +57,7 @@ function onDialogClick(e: MouseEvent) {
 }
 
 const ROBOT_PROMPTS = [
+  { example: '"what can you do?" (or just "help")', triggers: 'list of every available tool with its description' },
   { example: '"top 5 products"', triggers: 'bar — top N products by revenue' },
   { example: '"sales trend over time"', triggers: 'line — daily revenue (also: "last 30 days", "last month")' },
   { example: '"revenue by category"', triggers: 'pie — category breakdown' },
