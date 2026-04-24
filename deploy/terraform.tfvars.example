@@ -1,0 +1,36 @@
+# Copy to terraform.tfvars and fill in. The tfvars file is gitignored.
+
+# ── OVH ────────────────────────────────────────────────────────────────
+# Generate API credentials at https://api.ovh.com/createToken
+# Scopes: GET/POST/PUT/DELETE on /cloud/project/*
+ovh_application_key    = "REPLACE_ME"
+ovh_application_secret = "REPLACE_ME"
+ovh_consumer_key       = "REPLACE_ME"
+
+# Public Cloud project ID (UUID in the OVH UI)
+ovh_project_id = "REPLACE_ME"
+
+# ── Access ─────────────────────────────────────────────────────────────
+# SSH public key authorized for ubuntu@<instance>
+ssh_public_key = "ssh-ed25519 AAAA... you@laptop"
+
+# Public hostname Caddy will serve. Point this A record at the output instance_ipv4.
+domain = "REPLACE_ME"
+
+# Edge basic-auth gate.
+# Generate the bcrypt hash with:
+#   docker run --rm caddy:2-alpine caddy hash-password --plaintext '<password>'
+basic_auth_user = "REPLACE_ME"
+basic_auth_hash = "REPLACE_ME"
+
+# Optional: bake an Anthropic API key into the server env. Leave unset / empty
+# for pure BYOK (each operator supplies their own at runtime).
+# anthropic_api_key = "sk-ant-..."
+
+# ── Overrides (uncomment to change defaults) ───────────────────────────
+# region        = "GRA11"
+# flavor_name   = "b2-7"
+# image_name    = "Ubuntu 24.04"
+# app_image     = "ghcr.io/<owner>/dr-assignment:latest"
+# migrate_image = "ghcr.io/<owner>/dr-assignment-migrate:latest"
+# instance_name = "dr-demo"

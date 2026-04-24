@@ -29,3 +29,8 @@ ENV NODE_ENV=development \
 COPY . .
 EXPOSE 3455
 CMD ["npm", "run", "dev"]
+
+FROM deps AS migrate
+COPY db ./db
+COPY kysely.config.ts ./
+CMD ["npm", "run", "db:migrate"]
