@@ -9,7 +9,7 @@ The brief lives in [`docs/artefacts/friday_vendor_call_email.md`](./docs/artefac
 Docker is the only host dependency.
 
 > [!IMPORTANT]
-> **`ANTHROPIC_API_KEY` is a prerequisite.** Copy `.env.example` → `.env` and set `ANTHROPIC_API_KEY=sk-ant-...` **before** `make up` / `make dev` / `docker compose up`. Without it the UI loads but every chat message fails. `AI_PROVIDER=robot` is an offline stub that needs no key — useful for demos and tests.
+> **`ANTHROPIC_API_KEY` is a prerequisite.** Copy `.env.example` → `.env` and set `ANTHROPIC_API_KEY=sk-ant-...` **before** `make up` / `make dev` / `docker compose up`. Generate one at [platform.claude.com/settings/keys](https://platform.claude.com/settings/keys). Without it the UI loads but every chat message fails. `AI_PROVIDER=robot` is an offline stub that needs no key — useful for demos and tests.
 
 ```bash
 cp .env.example .env        # then edit to add ANTHROPIC_API_KEY
