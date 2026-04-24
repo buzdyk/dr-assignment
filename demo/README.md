@@ -88,3 +88,14 @@ npm run db:migrate:make <name>  # scaffold a new migration
 ```
 
 Every schema change must also be mirrored in `db/types.ts`.
+
+## Seed data
+
+Demo seed data lives in `db/seeds/` and is typed against the `Database` interface. Tunable constants (vendor UUIDs, day range, cancellation rate, faker seed) are centralised in `db/seed-data.ts`. Runs are deterministic via a pinned faker seed.
+
+```bash
+npm run db:seed     # truncate + reseed (idempotent)
+npm run db:reset    # rollback all migrations + re-migrate + reseed
+```
+
+The first seed file truncates all tables, so re-running `db:seed` is safe.

@@ -11,18 +11,31 @@
     "db:migrate": "kysely migrate:latest",
     "db:migrate:down": "kysely migrate:down",
     "db:migrate:list": "kysely migrate:list",
-    "db:migrate:make": "kysely migrate:make"
+    "db:migrate:make": "kysely migrate:make",
+    "db:seed": "kysely seed:run",
+    "db:reset": "kysely migrate:rollback && kysely migrate:latest && kysely seed:run"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.68.0",
+    "@nuxt/fonts": "^0.14.0",
+    "@tailwindcss/vite": "^4.2.4",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "kysely": "^0.28.16",
+    "lucide-vue-next": "^1.0.0",
     "nuxt": "^4.4.2",
     "pg": "^8.20.0",
+    "reka-ui": "^2.9.6",
+    "tailwind-merge": "^3.5.0",
+    "tailwindcss": "^4.2.4",
     "vue": "^3.5.32",
     "vue-router": "^5.0.4"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.4.0",
     "@types/pg": "^8.20.0",
     "kysely-ctl": "^0.20.0",
-    "tsx": "^4.21.0"
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }

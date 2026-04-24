@@ -1,6 +1,6 @@
 ---
 type: todo
-status: pending
+status: done
 description: Wire the NexTrade schema into Kysely migrations via kysely-ctl
 ---
 # DB Migrations

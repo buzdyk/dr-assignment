@@ -1,6 +1,6 @@
 ---
 type: todo
-status: backlog
+status: done
 description: Seed two demo vendors with product/order/cancellation data rich enough for the kickoff's demo queries
 ---
 # DB Seeds
