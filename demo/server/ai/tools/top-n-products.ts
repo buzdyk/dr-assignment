@@ -1,9 +1,11 @@
 import { sql } from 'kysely'
 import {
   baseFilterSchema,
+  dateRangeFilters,
   resolveDateRange,
   ToolInputError,
   type BaseFilter,
+  type ToolPresentation,
   type ToolSpec,
 } from './types'
 
@@ -20,10 +22,14 @@ type Row = {
   value: number
 }
 
-export const topNProducts: ToolSpec<
-  Args,
-  { rows: Row[]; metric: Args['metric']; start_date: string; end_date: string }
-> = {
+type Result = ToolPresentation & {
+  rows: Row[]
+  metric: Args['metric']
+  start_date: string
+  end_date: string
+}
+
+export const topNProducts: ToolSpec<Args, Result> = {
   name: 'get_top_n_products',
   description:
     "Return the vendor's top N products over a date range, ranked by revenue or units sold. Excludes cancelled orders.",
@@ -79,11 +85,24 @@ export const topNProducts: ToolSpec<
       .limit(args.n)
       .execute()
 
+    const mapped = rows.map((r) => ({ ...r, value: Number(r.value) }))
+    const metricLabel = args.metric === 'revenue' ? 'revenue' : 'units sold'
+    const overview = mapped.length
+      ? `Top ${args.n} by ${metricLabel} · ${start_date} → ${end_date}`
+      : `No sales between ${start_date} and ${end_date}`
+
     return {
-      rows: rows.map((r) => ({ ...r, value: Number(r.value) })),
+      rows: mapped,
       metric: args.metric,
       start_date,
       end_date,
+      overview,
+      filters: [
+        { label: 'n', value: String(args.n) },
+        { label: 'metric', value: args.metric },
+        ...dateRangeFilters(start_date, end_date),
+      ],
+      chart: { kind: 'bar', x: 'name', y: 'value' },
     }
   },
 }

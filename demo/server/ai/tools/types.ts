@@ -13,11 +13,32 @@ export type BaseFilter = {
 
 export type JsonSchema = Record<string, unknown>
 
-export interface ToolSpec<Args = unknown, Result = unknown> {
+export type FilterChip = { label: string; value: string }
+
+export type ChartHint = {
+  kind: 'bar' | 'line' | 'pie'
+  x: string
+  y: string
+}
+
+export type ToolPresentation = {
+  overview: string
+  filters: FilterChip[]
+  chart: ChartHint
+}
+
+export interface ToolSpec<Args = unknown, Result extends ToolPresentation = ToolPresentation> {
   name: string
   description: string
   input_schema: JsonSchema
   execute: (ctx: ToolContext, args: Args) => Promise<Result>
+}
+
+export function dateRangeFilters(start_date: string, end_date: string): FilterChip[] {
+  return [
+    { label: 'from', value: start_date },
+    { label: 'to', value: end_date },
+  ]
 }
 
 export type ModelFacingSpec = Pick<
