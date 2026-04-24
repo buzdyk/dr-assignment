@@ -1,12 +1,12 @@
 ---
 type: adr
-status: proposed
+status: accepted
 date: 2026-04-23
 ---
 # ADR-008: Text-to-SQL — AI ↔ data access approach
 
 ## Status
-Proposed — leaning toward predefined tools (Option B).
+Accepted — predefined tools (Option B). Implemented in `demo/server/ai/tools/` and consumed via `pickTools` / `summarize` in the Claude provider.
 
 ## Context
 
@@ -83,7 +83,7 @@ Trade-off accepted: new question shapes (regional breakdowns, seasonality, etc.)
 
 ## Decision
 
-To be decided.
+**Option B — predefined query tools.** Each tool takes typed params; `vendor_id` is injected server-side from the tenant picker so the AI can never reach across vendors. The MVP menu covers every query shape from the kickoff artefacts; new shapes are a one-file change. Implementation lives under `demo/server/ai/tools/`, with `list_capabilities` exposing the menu to the model.
 
 ## Related
 

@@ -11,4 +11,4 @@ Numbered sequentially. Append-only — superseded ADRs get a note, never deleted
 | [[005-DB_TOOLING]] | Kysely + kysely-ctl | Accepted |
 | [[006-FRONTEND_TOOLING]] | TypeScript + Vue + Tailwind + shadcn-vue | Accepted |
 | [[007-CHART_LIBRARY]] | shadcn-vue Chart (unovis-vue) | Proposed |
-| [[008-TEXT_TO_SQL]] | AI↔data access — text-to-SQL vs. predefined tools | Proposed |
+| [[008-TEXT_TO_SQL]] | AI↔data access — text-to-SQL vs. predefined tools | Accepted |
