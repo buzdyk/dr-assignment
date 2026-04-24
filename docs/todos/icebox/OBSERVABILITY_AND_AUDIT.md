@@ -66,7 +66,7 @@ Required for compliance ("show me everything you did for vendor X in March") and
 
 ## Related
 
-- [[../active/CHAT_ENDPOINT]] — the request boundary where logging starts
-- [[../backlog/CLAUDE_PROVIDER_ADAPT]] — token-usage extraction lives here
+- [[../completed/CHAT_ENDPOINT]] — the request boundary where logging starts
+- [[../completed/CLAUDE_PROVIDER_ADAPT]] — token-usage extraction lives here
 - [[../../adr/002-BYOK_CLAUDE]] — vendor-scoped key handling has its own audit needs
 - [[PROMPT_INJECTION_HARDENING]] — audit log is part of the detection story for adversarial prompts

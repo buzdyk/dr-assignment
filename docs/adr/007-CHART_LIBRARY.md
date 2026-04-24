@@ -75,6 +75,15 @@ Where the chart *data* originates (deterministic backend responses, AI tool outp
 
 - Mentioned for completeness; too low-level for MVP timescales.
 
+### G. In-house SVG (no library)
+
+- Hand-rolled Vue component with manual scale / path / arc math for the three required shapes (line / bar / pie).
+- Theming is whatever we write — straight Tailwind CSS variables on SVG elements, no library to bridge.
+- Chart coverage is exactly what we build, nothing more.
+- Zero dependency, zero bundle cost.
+- Maturity is "as mature as we make it" — no community to lean on, no examples.
+- Lock-in is high in the sense that any chart UX growth (interactivity, animations) is on us.
+
 ## Comparison
 
 | Option | Stack fit | Theming ease | Chart coverage | Maturity | Bundle weight |
@@ -84,6 +93,7 @@ Where the chart *data* originates (deterministic backend responses, AI tool outp
 | C. ApexCharts | Independent | Medium (fight defaults) | High | High | Moderate-large |
 | D. ECharts | Independent | Low (own theme system) | Highest | Very high | Large |
 | E. unovis-vue direct | Moderate | High (CSS vars) | Sufficient | Low | Moderate |
+| G. In-house SVG | Native | Direct (Tailwind on SVG) | Exactly the three shapes | Whatever we write | Zero |
 
 ## Considerations for picking
 
@@ -95,16 +105,19 @@ Where the chart *data* originates (deterministic backend responses, AI tool outp
 
 ## Decision
 
-**Option A — shadcn-vue Chart (unovis-vue under the hood).**
+**Option G — in-house SVG, no library.**
 
-Priority was brand consistency and stack fit: the chat UI is already built on shadcn-vue + Tailwind CSS variables, and option A inherits those tokens natively, so the line / bar / pie shapes required by the chat UI theme themselves from the same variables as the rest of the surface. The required chart coverage (line / bar / pie for trends, top-N, and category breakdowns) is fully within scope, and we have no near-term need for exotic chart types that would justify D's bundle cost.
+Three simple shapes (line / bar / pie) on a curated dataset don't need a library. A hand-rolled Vue component covers them in a few hundred lines, themes natively against the existing Tailwind CSS variables (no bridge, no wrapper), and adds zero bundle weight. For a PoC where the chart UX is "render this aggregate, label the axes" — not interactive, not animated, no exotic shapes — the dependency is overhead rather than leverage. The flaky shadcn-vue Charts docs (pages that froze in the browser during evaluation) reinforced the call: not a deal-breaker on its own, but combined with the lack of need for what the library actually provides, going library-less was the cleaner outcome.
+
+Originally Option A was favoured for stack fit and the same brand-consistency story; in practice the in-house SVG hits the same brand consistency without the dependency. Option A remains the natural escape hatch if the chart UX ever grows.
 
 Trade-offs accepted:
-- unovis is younger than Chart.js / ECharts, with a smaller community. If we hit a renderer limitation we'd have to swap out our wrapper components.
-- Swapping renderer later means rewriting our chart wrappers (medium lock-in).
+- All future chart-UX growth (hover tooltips, drill-down, animations, zoom, exotic chart types) is on us. Anything beyond the current three shapes either gets hand-rolled or triggers a swap to Option A.
+- No community to crib examples from. Bug-fixing the chart math is a code-reading exercise, not a doc lookup.
+- Lock-in to our own component shape — call sites are coupled to our prop surface, so a future swap means rewriting that surface to match whatever library we adopt.
 
 ## Related
 
 - [[006-FRONTEND_TOOLING]] — the shadcn-vue + Tailwind decisions this sits on top of.
 - [[../artefacts/kickoff_audio_sync]] — source of the chart-type requirements.
-- [[../todos/active/CHAT_UI]] — consumer.
+- [[../todos/completed/CHAT_UI]] — consumer.

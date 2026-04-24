@@ -8,7 +8,7 @@ reason: PoC uses BYOK Claude; on-prem inference only justified once a real vendo
 
 ## Problem
 
-Today the only real backend is Claude via BYOK ([[../../adr/002-BYOK_CLAUDE]]). Vendors in regulated regions (EU, healthcare, gov), customers with strict data-residency rules, or anyone trying to cap inference cost at scale will not be willing to send vendor data to a hosted third party. The `AIProvider` seam in [[../active/SSE_AI_ENDPOINT]] was deliberately built to absorb this — we just have not used the seam yet.
+Today the only real backend is Claude via BYOK ([[../../adr/002-BYOK_CLAUDE]]). Vendors in regulated regions (EU, healthcare, gov), customers with strict data-residency rules, or anyone trying to cap inference cost at scale will not be willing to send vendor data to a hosted third party. The `AIProvider` seam in [[../completed/SSE_AI_ENDPOINT]] was deliberately built to absorb this — we just have not used the seam yet.
 
 ## Approach
 
@@ -41,6 +41,6 @@ Tool-call reliability: the gap vs Claude is real. Mitigations to write into the 
 ## Related
 
 - [[../../adr/002-BYOK_CLAUDE]] — chose BYOK Claude for the PoC; this is the alternative backend
-- [[../active/SSE_AI_ENDPOINT]] — the provider seam this fills
-- [[../backlog/CLAUDE_PROVIDER_ADAPT]] — the analogous adapter for Claude
+- [[../completed/SSE_AI_ENDPOINT]] — the provider seam this fills
+- [[../completed/CLAUDE_PROVIDER_ADAPT]] — the analogous adapter for Claude
 - [[MULTI_HOP_TOOL_LOOP]] — the `nextStep` interface change would apply identically here

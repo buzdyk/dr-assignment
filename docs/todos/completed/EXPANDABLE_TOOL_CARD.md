@@ -1,6 +1,6 @@
 ---
 type: todo
-status: backlog
+status: done
 description: Expand a tool card to reveal the raw rows as a table, alongside the existing overview + chart
 ---
 # Expandable tool card

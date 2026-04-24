@@ -10,7 +10,7 @@ Reference notes on the Anthropic Claude features this prototype will actually to
 
 | Capability | Why it matters here | Related |
 |---|---|---|
-| Streaming responses | Chat feels alive; tokens appear as Claude produces them | [[../adr/003-SSE_FOR_AI_STREAMING]], [[../todos/active/SSE_AI_ENDPOINT]] |
+| Streaming responses | Chat feels alive; tokens appear as Claude produces them | [[../adr/003-SSE_FOR_AI_STREAMING]], [[../todos/completed/SSE_AI_ENDPOINT]] |
 | Tool use | Text-to-SQL and structured chart payloads both ride on it | (forthcoming text-to-SQL ADR) |
 | System prompts | Constrain the model to the schema; refuse instead of hallucinating | [[../artefacts/kickoff_audio_sync]] |
 | Prompt caching | Keep cost and first-token latency down when schema is always in context | — |

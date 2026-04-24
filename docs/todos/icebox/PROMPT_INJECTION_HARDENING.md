@@ -64,4 +64,4 @@ A small rule-based or model-based prefilter that tags suspicious prompts before 
 - [[../../adr/008-TEXT_TO_SQL]] — chose curated tools over text-to-SQL; that's the foundational injection mitigation
 - [[OBSERVABILITY_AND_AUDIT]] — audit trail is half of the detection story
 - [[MULTI_HOP_TOOL_LOOP]] — every additional hop is another tool-arg-injection opportunity
-- [[../active/CHAT_ENDPOINT]] — request boundary where vendor_id is bound
+- [[../completed/CHAT_ENDPOINT]] — request boundary where vendor_id is bound

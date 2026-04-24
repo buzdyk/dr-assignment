@@ -1,13 +1,14 @@
 ---
 type: todo
-status: backlog
+status: icebox
 description: Conversation history, persistence, and multi-turn refinement for the chat endpoint
+reason: Stateless one-shot chat covers the demo prompts; multi-turn history is only worth the design work once a real user flow asks for follow-ups or chart-refinement turns
 ---
 # Chat Polish
 
 ## Problem
 
-The first cut of the chat endpoint ([[../active/CHAT_ENDPOINT]]) is stateless — each request is an independent one-shot `{ prompt, vendor_id }` call with no memory of prior turns. That's fine to ship the pipeline, but the eventual UX is a real conversation: follow-up questions ("drill into that Tuesday spike"), reference-to-previous-chart ("show that as a pie instead"), and recovery from "I don't have that data" with a reframed question.
+The first cut of the chat endpoint ([[../completed/CHAT_ENDPOINT]]) is stateless — each request is an independent one-shot `{ prompt, vendor_id }` call with no memory of prior turns. That's fine to ship the pipeline, but the eventual UX is a real conversation: follow-up questions ("drill into that Tuesday spike"), reference-to-previous-chart ("show that as a pie instead"), and recovery from "I don't have that data" with a reframed question.
 
 ## Approach
 
@@ -21,6 +22,6 @@ Open questions, not a decision:
 
 ## Related
 
-- [[../active/CHAT_ENDPOINT]] — the stateless first cut this polishes
+- [[../completed/CHAT_ENDPOINT]] — the stateless first cut this polishes
 - [[../../adr/008-TEXT_TO_SQL]]
 - [[../../artefacts/kickoff_audio_sync]]

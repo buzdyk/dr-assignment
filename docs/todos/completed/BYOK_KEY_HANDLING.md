@@ -1,6 +1,6 @@
 ---
 type: todo
-status: active
+status: done
 description: Wire the Claude API key from a server-side env var into the Anthropic client
 ---
 # BYOK Key Handling

@@ -55,7 +55,7 @@ Termination: cap at e.g. 5 hops to bound runaway loops; emit an `error` event if
 
 For the Robot provider, multi-hop is not meaningful — keep it as a single-step adapter that yields one batch and a `turn_end: end_turn`. Or fake a two-hop script for one specific test prompt.
 
-Real `tool_use` / `tool_result` blocks (not the prose reconstruction in [[../backlog/CLAUDE_PROVIDER_ADAPT]]) are part of this — multi-hop only works if Claude sees its own prior tool calls as structured blocks on the next call.
+Real `tool_use` / `tool_result` blocks (not the prose reconstruction in [[../completed/CLAUDE_PROVIDER_ADAPT]]) are part of this — multi-hop only works if Claude sees its own prior tool calls as structured blocks on the next call.
 
 ## Trade-offs
 
@@ -68,10 +68,10 @@ Real `tool_use` / `tool_result` blocks (not the prose reconstruction in [[../bac
 
 - A real user query needs cross-tool reasoning.
 - Single-shot summary quality drops because Claude can't pick a tool informed by another tool's output.
-- The synthetic-prose tool-result reconstruction in [[../backlog/CLAUDE_PROVIDER_ADAPT]] visibly degrades summaries.
+- The synthetic-prose tool-result reconstruction in [[../completed/CLAUDE_PROVIDER_ADAPT]] visibly degrades summaries.
 
 ## Related
 
-- [[../backlog/CLAUDE_PROVIDER_ADAPT]] — the current single-shot Claude adapter; this supersedes its provider interface
-- [[../active/SSE_AI_ENDPOINT]] — defined the original `pickTools` + `summarize` split
+- [[../completed/CLAUDE_PROVIDER_ADAPT]] — the current single-shot Claude adapter; this supersedes its provider interface
+- [[../completed/SSE_AI_ENDPOINT]] — defined the original `pickTools` + `summarize` split
 - [[../../adr/008-TEXT_TO_SQL]]
