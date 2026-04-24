@@ -1,7 +1,9 @@
 import type {
   AIProvider,
-  RunConversationInput,
-  RunConversationResult,
+  ChatMessage,
+  PickResult,
+  PickToolsInput,
+  SummarizeInput,
 } from './types'
 
 type Script =
@@ -38,7 +40,7 @@ const SCRIPTS: { match: RegExp; reply: Script }[] = [
       args: { granularity: 'day' },
       template: (res) => {
         const rows = (res as { rows: Array<{ bucket: string; revenue: number }> }).rows
-        if (!rows.length) return "No sales in that window."
+        if (!rows.length) return 'No sales in that window.'
         const total = rows.reduce((a, r) => a + r.revenue, 0)
         return `Daily revenue totaled $${total.toFixed(2)} across ${rows.length} days.`
       },
@@ -60,22 +62,17 @@ const SCRIPTS: { match: RegExp; reply: Script }[] = [
     },
   },
   {
-    match: /tuesday|wednesday|compare.*(day|date)/i,
+    match: /region|na|eu|apac|latam/i,
     reply: {
       kind: 'tool',
-      tool: 'compare_days',
-      args: {
-        day_a: yesterday(2),
-        day_b: yesterday(1),
-        metric: 'revenue',
-      },
+      tool: 'get_revenue_by_region',
+      args: {},
       template: (res) => {
-        const r = res as {
-          day_a: { date: string; value: number }
-          day_b: { date: string; value: number }
-          delta: number
-        }
-        return `${r.day_a.date}: $${r.day_a.value.toFixed(2)} vs ${r.day_b.date}: $${r.day_b.value.toFixed(2)} (delta $${r.delta.toFixed(2)}).`
+        const rows = (res as { rows: Array<{ region: string; revenue: number }> }).rows
+        if (!rows.length) return 'No regional activity in that window.'
+        return rows
+          .map((r) => `${r.region}: $${r.revenue.toFixed(2)}`)
+          .join('\n')
       },
     },
   },
@@ -87,20 +84,24 @@ const SCRIPTS: { match: RegExp; reply: Script }[] = [
     },
   },
   {
-    match: /cancel/i,
+    match: /status|mix|cancel/i,
     reply: {
       kind: 'tool',
-      tool: 'get_cancellation_rate',
+      tool: 'get_order_status_mix',
       args: {},
       template: (res) => {
         const r = res as {
+          rows: Array<{ status: string; order_count: number }>
           total_orders: number
-          cancelled_orders: number
-          cancellation_rate: number | null
         }
         if (r.total_orders === 0) return 'No orders in that window.'
-        const pct = ((r.cancellation_rate ?? 0) * 100).toFixed(1)
-        return `${r.cancelled_orders} of ${r.total_orders} orders were cancelled (${pct}%).`
+        const cancelled =
+          r.rows.find((row) => row.status === 'cancelled')?.order_count ?? 0
+        const pct = ((cancelled / r.total_orders) * 100).toFixed(1)
+        const mix = r.rows
+          .map((row) => `${row.status}: ${row.order_count}`)
+          .join(', ')
+        return `${r.total_orders} orders — ${mix}. Cancellation rate: ${pct}%.`
       },
     },
   },
@@ -118,30 +119,63 @@ const FALLBACK: Script = {
   text: "I don't have a tool for that question.",
 }
 
-function yesterday(daysBack: number): string {
-  const d = new Date()
-  d.setUTCDate(d.getUTCDate() - daysBack)
-  return d.toISOString().slice(0, 10)
+const CHUNK_DELAY_MS = Number(process.env.ROBOT_CHUNK_DELAY_MS ?? 150)
+const PICK_DELAY_MS = Number(process.env.ROBOT_PICK_DELAY_MS ?? 250)
+
+function scriptForMessages(messages: ChatMessage[]): Script {
+  const last = [...messages].reverse().find((m) => m.role === 'user')
+  const prompt = last?.content ?? ''
+  return SCRIPTS.find((s) => s.match.test(prompt))?.reply ?? FALLBACK
+}
+
+function chunkText(text: string, pieces: number): string[] {
+  if (pieces <= 1 || text.length <= pieces) return [text]
+  const words = text.split(/(\s+)/)
+  const out: string[] = []
+  const bucketSize = Math.ceil(words.length / pieces)
+  for (let i = 0; i < words.length; i += bucketSize) {
+    out.push(words.slice(i, i + bucketSize).join(''))
+  }
+  return out.filter((c) => c.length > 0)
 }
 
 export function createRobotProvider(): AIProvider {
   return {
-    async runConversation(
-      input: RunConversationInput,
-    ): Promise<RunConversationResult> {
-      const last = input.messages.findLast((m) => m.role === 'user')
-      const prompt = last?.content ?? ''
-      const script = SCRIPTS.find((s) => s.match.test(prompt))?.reply ?? FALLBACK
-
+    async pickTools(input: PickToolsInput): Promise<PickResult> {
+      if (PICK_DELAY_MS > 0) await new Promise((r) => setTimeout(r, PICK_DELAY_MS))
+      const script = scriptForMessages(input.messages)
       if (script.kind === 'text') {
-        return { text: script.text }
+        return { kind: 'text', text: script.text }
+      }
+      return {
+        kind: 'tools',
+        calls: [{ name: script.tool, args: script.args }],
+      }
+    },
+
+    async *summarize(input: SummarizeInput): AsyncIterable<string> {
+      const script = scriptForMessages(input.messages)
+      let summary: string
+      if (script.kind === 'text') {
+        summary = script.text
+      } else {
+        const result = input.results[0]
+        if (!result || result.is_error) {
+          summary = `The ${input.calls[0]?.name ?? 'tool'} call failed.`
+        } else {
+          try {
+            summary = script.template(JSON.parse(result.output))
+          } catch {
+            summary = 'Could not parse tool output.'
+          }
+        }
       }
 
-      const { output, is_error } = await input.onToolCall(script.tool, script.args)
-      if (is_error) {
-        return { text: `Tool ${script.tool} errored: ${output}` }
+      const chunks = chunkText(summary, 8)
+      for (const chunk of chunks) {
+        yield chunk
+        if (CHUNK_DELAY_MS > 0) await new Promise((r) => setTimeout(r, CHUNK_DELAY_MS))
       }
-      return { text: script.template(JSON.parse(output)) }
     },
   }
 }

@@ -1,5 +1,7 @@
 import { createExecutor } from '../ai/executor'
 import { resolveProvider, ProviderError } from '../ai/providers'
+import { createRobotProvider } from '../ai/providers/robot'
+import { runChat, type ChatEvent } from '../ai/runner'
 import { buildSystemPrompt } from '../ai/system-prompt'
 import { toolSpecs } from '../ai/tools'
 import { useDb } from '../utils/db'
@@ -8,7 +10,11 @@ const UUID =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody<{ prompt?: unknown; vendor_id?: unknown }>(event)
+  const body = await readBody<{
+    prompt?: unknown
+    vendor_id?: unknown
+    debug?: unknown
+  }>(event)
 
   if (typeof body?.prompt !== 'string' || !body.prompt.trim()) {
     throw createError({
@@ -40,26 +46,9 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const executor = createExecutor({ vendorId: vendor.id, db })
-  const provider = resolveProvider()
-
+  let provider
   try {
-    const { text } = await provider.runConversation({
-      system: buildSystemPrompt(vendor),
-      tools: toolSpecs(),
-      messages: [{ role: 'user', content: body.prompt }],
-      onToolCall: executor.dispatch,
-    })
-
-    return {
-      text,
-      tool_calls: executor.calls.map((c) => ({
-        name: c.name,
-        args: c.args,
-        result: c.result,
-        ...(c.is_error ? { is_error: true } : {}),
-      })),
-    }
+    provider = body.debug === true ? createRobotProvider() : resolveProvider()
   } catch (err) {
     if (err instanceof ProviderError) {
       throw createError({
@@ -67,12 +56,31 @@ export default defineEventHandler(async (event) => {
         data: { error: 'provider_error', message: err.message },
       })
     }
-    throw createError({
-      statusCode: 500,
-      data: {
-        error: 'internal_error',
-        message: err instanceof Error ? err.message : String(err),
-      },
-    })
+    throw err
   }
+
+  const executor = createExecutor({ vendorId: vendor.id, db })
+  const stream = createEventStream(event)
+
+  const emit = (e: ChatEvent) =>
+    stream.push({ event: e.type, data: JSON.stringify(e) })
+
+  const toolLatencyMs =
+    body.debug === true
+      ? Number(process.env.ROBOT_TOOL_LATENCY_MS ?? 500)
+      : 0
+
+  runChat({
+    provider,
+    system: buildSystemPrompt(vendor),
+    messages: [{ role: 'user', content: body.prompt }],
+    tools: toolSpecs(),
+    dispatch: executor.dispatch,
+    emit,
+    toolLatencyMs,
+  }).finally(() => {
+    stream.close()
+  })
+
+  return stream.send()
 })
