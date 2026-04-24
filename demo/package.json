@@ -13,7 +13,10 @@
     "db:migrate:list": "kysely migrate:list",
     "db:migrate:make": "kysely migrate:make",
     "db:seed": "kysely seed:run",
-    "db:reset": "kysely migrate:rollback && kysely migrate:latest && kysely seed:run"
+    "db:reset": "kysely migrate:rollback && kysely migrate:latest && kysely seed:run",
+    "test": "npm run test:unit && npm run test:http",
+    "test:unit": "vitest run --config vitest.unit.config.ts",
+    "test:http": "vitest run --config vitest.http.config.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.68.0",
@@ -23,6 +26,7 @@
     "clsx": "^2.1.1",
     "kysely": "^0.28.16",
     "lucide-vue-next": "^1.0.0",
+    "marked": "^18.0.2",
     "nuxt": "^4.4.2",
     "pg": "^8.20.0",
     "reka-ui": "^2.9.6",
@@ -33,9 +37,12 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^10.4.0",
+    "@nuxt/test-utils": "^4.0.2",
     "@types/pg": "^8.20.0",
+    "happy-dom": "^20.9.0",
     "kysely-ctl": "^0.20.0",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.5"
   }
 }

@@ -1,4 +1,4 @@
-.PHONY: dev build up down logs migrate migrate-down migrate-list migrate-make seed reset-db db-shell
+.PHONY: dev build up down logs migrate migrate-down migrate-list migrate-make seed reset-db db-shell test
 
 dev:
 	docker compose --profile dev up --build dev
@@ -38,3 +38,6 @@ reset-db:
 
 db-shell:
 	docker compose exec db psql -U postgres -d nextrade
+
+test:
+	docker compose exec dev npm test
