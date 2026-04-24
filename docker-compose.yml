@@ -22,6 +22,8 @@ services:
       NITRO_PORT: ${PORT:-3455}
       NITRO_HOST: 0.0.0.0
       DATABASE_URL: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-nextrade}
+      AI_PROVIDER: ${AI_PROVIDER:-claude}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
     ports:
       - "${PORT:-3455}:${PORT:-3455}"
     depends_on:
@@ -39,6 +41,8 @@ services:
       NUXT_HOST: 0.0.0.0
       CHOKIDAR_USEPOLLING: "true"
       DATABASE_URL: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-nextrade}
+      AI_PROVIDER: ${AI_PROVIDER:-claude}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
     ports:
       - "${PORT:-3455}:${PORT:-3455}"
     volumes:
