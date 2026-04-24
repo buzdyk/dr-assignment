@@ -24,7 +24,7 @@ export type ChartHint = {
 export type ToolPresentation = {
   overview: string
   filters: FilterChip[]
-  chart: ChartHint
+  chart?: ChartHint
 }
 
 export interface ToolSpec<Args = unknown, Result extends ToolPresentation = ToolPresentation> {
@@ -86,11 +86,13 @@ export const baseFilterSchema = {
   start_date: {
     type: 'string',
     format: 'date',
-    description: 'Inclusive start date, YYYY-MM-DD. Defaults to 30 days before end_date.',
+    description:
+      'Inclusive start date, YYYY-MM-DD. Omit this field to use the server default (30 days before end_date). Only pass an explicit value when the user specifies a date range — do not compute it yourself from your own sense of "today".',
   },
   end_date: {
     type: 'string',
     format: 'date',
-    description: 'Inclusive end date, YYYY-MM-DD. Defaults to today.',
+    description:
+      'Inclusive end date, YYYY-MM-DD. Omit this field to use the server default (today, per the system prompt). Only pass an explicit value when the user specifies a date range — do not compute it yourself from your own sense of "today".',
   },
 } as const

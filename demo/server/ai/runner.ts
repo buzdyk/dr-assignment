@@ -12,7 +12,7 @@ export type ToolEnvelope = {
   overview: string
   filters: FilterChip[]
   rows: unknown[]
-  chart: ChartHint
+  chart?: ChartHint
 }
 
 export type ChatEvent =
@@ -36,7 +36,6 @@ const ERROR_ENVELOPE: ToolEnvelope = {
   overview: 'tool failed',
   filters: [],
   rows: [],
-  chart: { kind: 'bar', x: '', y: '' },
 }
 
 export async function runChat(input: RunnerInput): Promise<void> {
@@ -111,9 +110,8 @@ function extractEnvelope(d: DispatchResult): ToolEnvelope {
     overview: typeof r.overview === 'string' ? r.overview : '',
     filters: Array.isArray(r.filters) ? r.filters : [],
     rows: Array.isArray(r.rows) ? r.rows : [],
-    chart:
-      r.chart && typeof r.chart === 'object'
-        ? (r.chart as ChartHint)
-        : { kind: 'bar', x: '', y: '' },
+    ...(r.chart && typeof r.chart === 'object'
+      ? { chart: r.chart as ChartHint }
+      : {}),
   }
 }

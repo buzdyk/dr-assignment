@@ -17,6 +17,19 @@ type Script =
 
 const SCRIPTS: { match: RegExp; reply: Script }[] = [
   {
+    match: /what.*(can|do).*you.*do|what.*tool|list.*(tool|capabilit)|what.*data.*(do|can).*you|capabilit|^\s*(help|tools?)\s*[!?.]*\s*$/i,
+    reply: {
+      kind: 'tool',
+      tool: 'list_capabilities',
+      args: {},
+      template: (res) => {
+        const rows = (res as { rows: Array<{ name: string; description: string }> }).rows
+        if (!rows.length) return 'No tools registered.'
+        return `I can answer questions backed by ${rows.length} tools — see the list below.`
+      },
+    },
+  },
+  {
     match: /top.*(3|three|5|five).*(product|selling)/i,
     reply: {
       kind: 'tool',

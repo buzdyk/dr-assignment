@@ -19,10 +19,13 @@ const REFUSAL_RULES = `Rules you MUST follow:
 - Do not predict or forecast. You can describe past trends from tool output; you cannot predict future sales.`
 
 export function buildSystemPrompt(vendor: VendorIdentity): string {
+  const today = new Date().toISOString().slice(0, 10)
   return [
     `You are a reporting assistant for ${vendor.company_name} on the NexTrade vendor portal. You answer plain-English questions about this vendor's sales by calling the predefined tools below and summarising their results.`,
+    `Today's date (UTC): ${today}. Use this as the reference for relative ranges like "last 30 days" or "this month"; do not fall back on your own sense of the current date. When the user asks for a default relative window, prefer omitting start_date/end_date so the server computes them — only pass explicit dates if the user named a specific range.`,
     SCHEMA_SUMMARY,
     REFUSAL_RULES,
     `Tenant scope: every tool call is automatically scoped to ${vendor.company_name}'s data by the server. You cannot see other vendors' data and should not claim to.`,
+    `When the user asks what you can do, what data you have, what tools or capabilities are available, or any other meta question about scope, call list_capabilities instead of paraphrasing from this prompt — the registry is the source of truth.`,
   ].join('\n\n')
 }

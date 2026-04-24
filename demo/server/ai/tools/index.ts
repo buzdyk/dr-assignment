@@ -1,4 +1,5 @@
 import { categoryBreakdown } from './category-breakdown'
+import { listCapabilities } from './list-capabilities'
 import { orderStatusMix } from './order-status-mix'
 import { revenueByRegion } from './revenue-by-region'
 import { salesTrend } from './sales-trend'
@@ -11,6 +12,7 @@ const all: ToolSpec<any, any>[] = [
   categoryBreakdown,
   revenueByRegion,
   orderStatusMix,
+  listCapabilities,
 ]
 
 export const toolRegistry: Record<string, ToolSpec<any, any>> = Object.fromEntries(
