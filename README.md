@@ -2,6 +2,9 @@
 
 A working prototype of an "AI Reporting Assistant" for the NexTrade vendor portal: a vendor types a plain-English question ("top five items last month"), and the chat replies with a summary plus a chart, backed by the vendor's own Postgres data. Stack is Nuxt + Postgres with BYOK Claude.
 
+<img width="1024" height="693" alt="dr-assignment" src="https://github.com/user-attachments/assets/e1624f3a-971b-4ba3-9951-5c456c383a45" />
+
+
 The brief lives in [`docs/artefacts/friday_vendor_call_email.md`](./docs/artefacts/friday_vendor_call_email.md) and the kickoff transcript in [`docs/artefacts/kickoff_audio_sync.md`](./docs/artefacts/kickoff_audio_sync.md).
 
 ## Setup
