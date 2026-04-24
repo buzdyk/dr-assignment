@@ -17,7 +17,7 @@ defineProps<Props>()
 
     <article
       v-else
-      class="max-w-[80%] rounded-[var(--radius-card)] border border-[color:var(--color-hairline)] bg-[color:var(--color-surface)] px-4 py-3 text-[length:var(--text-body)] leading-[var(--text-body--line-height)]"
+      class="w-full text-[length:var(--text-body)] leading-[var(--text-body--line-height)]"
     >
       <slot />
     </article>

@@ -1,18 +1,21 @@
 <script setup lang="ts">
 /*
- * Chat container: header (title + lime assistant dot + optional slot for vendor switcher),
+ * Chat container: header (title + lime assistant dot + optional actions slot),
  * message stream, and sticky input. Matches the AI Chat card from Style Guide_3.
  */
 
+import { useTemplateRef } from 'vue'
+
 type Props = {
   title?: string
-  status?: string
 }
 
 withDefaults(defineProps<Props>(), {
   title: 'NexTrade AI',
-  status: 'AI READY',
 })
+
+const scrollEl = useTemplateRef<HTMLElement>('scrollEl')
+defineExpose({ scrollEl })
 </script>
 
 <template>
@@ -32,10 +35,10 @@ withDefaults(defineProps<Props>(), {
           {{ title }}
         </h2>
       </div>
-      <Label>{{ status }}</Label>
+      <slot name="header-actions" />
     </header>
 
-    <div class="flex-1 overflow-y-auto px-5 py-5">
+    <div ref="scrollEl" class="flex-1 overflow-y-auto px-5 py-5">
       <slot />
     </div>
 
