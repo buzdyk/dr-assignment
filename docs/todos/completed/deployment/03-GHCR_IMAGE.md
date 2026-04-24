@@ -1,6 +1,6 @@
 ---
 type: todo
-status: pending
+status: done
 description: Build + push the runtime and migrate images to GHCR; add docker-compose.prod.yml that pulls them instead of building locally
 ---
 # GHCR Images + Prod Compose
@@ -125,3 +125,7 @@ volumes:
 - [[02-CLOUD_INIT]] — consumes these images.
 - [[../../completed/DB_MIGRATIONS]] / [[../../completed/DB_SEEDS]] — the commands the migrate image wraps.
 - [[../../icebox/CI_GITHUB_ACTIONS]] — where the manual build + push should eventually live.
+
+## What Was Done
+
+`demo/Dockerfile` gained the planned `migrate` stage on top of `deps`. `deploy/docker-compose.prod.yml` is the standalone prod override that cloud-init drops at `/opt/app/docker-compose.yml` — Postgres with healthcheck, `app` pulling `${APP_IMAGE}`, profile-gated `migrate` + `seed` services on `${MIGRATE_IMAGE}`, and the Caddy sidecar. `make cloud-build` / `cloud-push` drive single-arch (`linux/amd64`) buildx pushes to `ghcr.io/buzdyk/dr-assignment` and `…-migrate` with both `:latest` and `:<short-sha>` tags. Packages flipped to public so the VM pulls without credentials.

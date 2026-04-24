@@ -1,6 +1,6 @@
 ---
 type: epic
-status: pending
+status: done
 description: Deploy the NexTrade demo to a single OVH Public Cloud VM via Terraform + cloud-init, fronted by Caddy auto-TLS
 ---
 # Deployment to OVH
@@ -50,3 +50,7 @@ Goal: publish the demo on a public URL for DR review, from a single OVH Public C
 ## Open questions
 
 - **Instance size.** `b2-7` (2 vCPU / 7 GB) is safe with Postgres colocated; `d2-2` (1 vCPU / 2 GB) probably also works. Pick at provisioning; it's a one-line change in `deploy/terraform.tfvars`.
+
+## What Was Done
+
+All four children landed in the `deploy/` directory plus a `cloud-*` Make target family at the repo root. Single `terraform apply` + manual A-record + first manual `make cloud-build cloud-push` is the end-to-end flow; cloud-init takes the VM from fresh Ubuntu 24.04 to a Caddy-fronted, basic-auth-gated HTTPS endpoint with migrations + seeds applied. ADR-010 was accepted in parallel and supersedes the BYOK assumption from ADR-002 — the operator's Anthropic key is baked into `terraform.tfvars` and forwarded into the app container's env. State remains local, no CI yet (deferred to [[../icebox/CI_GITHUB_ACTIONS]]).

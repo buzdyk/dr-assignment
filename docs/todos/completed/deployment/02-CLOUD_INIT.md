@@ -1,6 +1,6 @@
 ---
 type: todo
-status: pending
+status: done
 description: First-boot cloud-init user-data that installs Docker, writes the prod compose + .env + Caddyfile, pulls public GHCR images, runs migrations and seeds, and starts the stack
 ---
 # Cloud-init First Boot
@@ -98,3 +98,7 @@ Seeds run once on first boot only. The seed files truncate + reseed and are idem
 - [[01-OVH_TERRAFORM]] — the Terraform that renders and attaches this template.
 - [[03-GHCR_IMAGE]] — the image + compose override this script pulls.
 - [[04-TLS_AND_DNS]] — the Caddyfile dropped alongside the compose file.
+
+## What Was Done
+
+`deploy/cloud-init.yaml.tftpl` ships the four planned stages: Docker CE install via the official apt repo, UFW (22/80/443 only), `write_files` for `/opt/app/docker-compose.yml`, `Caddyfile`, `.env`, and `bootstrap.sh`, and a `runcmd` invocation that pulls the `oneoff` profile, runs migrate + seed, then `up -d`. The `.env` is rendered with the Terraform-generated Postgres password, the operator's Anthropic key, the basic-auth pair, and the GHCR image refs. `make cloud-logs` tails `/var/log/cloud-init-output.log` over SSH for first-boot debugging.

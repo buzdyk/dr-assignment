@@ -1,6 +1,6 @@
 ---
 type: todo
-status: pending
+status: done
 description: Caddy sidecar for auto-TLS with basic-auth gate; A record setup at the DNS provider. Domain + credentials supplied via gitignored tfvars — never committed.
 ---
 # TLS + DNS
@@ -100,3 +100,7 @@ The app streams chat responses over SSE ([[../../../adr/003-SSE_FOR_AI_STREAMING
 - [[02-CLOUD_INIT]] — writes the Caddyfile + sets the UFW rules Caddy depends on.
 - [[03-GHCR_IMAGE]] — the compose override Caddy lives inside.
 - [[../../../adr/003-SSE_FOR_AI_STREAMING]] — the streaming semantics Caddy must not break.
+
+## What Was Done
+
+`deploy/Caddyfile` is the three-line site block planned: `{$DOMAIN}` site, `basic_auth` gated on `{$BASIC_AUTH_USER}` / `{$BASIC_AUTH_HASH}`, `reverse_proxy app:3455`, gzip, console logs. The Caddy sidecar in `deploy/docker-compose.prod.yml` exposes 80/443, mounts `caddy-data` + `caddy-config` for cert persistence, and reads the env vars cloud-init writes to `/opt/app/.env` (origin: `terraform.tfvars`). Hostname, basic-auth user, and bcrypt hash stay out of the repo entirely. DNS A record remains a manual step after `terraform apply` — Caddy waits out propagation and ACME-issues on its own.

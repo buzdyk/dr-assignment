@@ -15,6 +15,7 @@ Archive of finished work.
 | [CLAUDE_PROVIDER_ADAPT](./CLAUDE_PROVIDER_ADAPT.md) | Adapt the Claude provider to the split pickTools / summarize interface with real token streaming |
 | [DB_MIGRATIONS](./DB_MIGRATIONS.md) | Wire the NexTrade schema into Kysely migrations via kysely-ctl |
 | [DB_SEEDS](./DB_SEEDS.md) | Seed two demo vendors with product/order/cancellation data rich enough for the kickoff's demo queries |
+| [DEPLOYMENT](./DEPLOYMENT.md) | Deploy the NexTrade demo to a single OVH Public Cloud VM via Terraform + cloud-init, fronted by Caddy auto-TLS |
 | [DOCKER_COMPOSE_SETUP](./DOCKER_COMPOSE_SETUP.md) | Add Postgres service to docker-compose and finish one-line setup docs |
 | [EXPANDABLE_TOOL_CARD](./EXPANDABLE_TOOL_CARD.md) | Expand a tool card to reveal the raw rows as a table, alongside the existing overview + chart |
 | [QUERY_TOOLS](./QUERY_TOOLS.md) | Predefined query tools the AI picks from — shared filter shape, one slice per tool, server-side vendor scoping |
