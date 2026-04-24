@@ -1,12 +1,12 @@
 ---
 type: adr
-status: proposed
-date: 2026-04-23
+status: accepted
+date: 2026-04-24
 ---
 # ADR-007: Chart library for the chat UI
 
 ## Status
-Proposed — awaiting review.
+Accepted.
 
 ## Context
 
@@ -95,12 +95,13 @@ Where the chart *data* originates (deterministic backend responses, AI tool outp
 
 ## Decision
 
-To be decided. Leaning directions based on priorities:
+**Option A — shadcn-vue Chart (unovis-vue under the hood).**
 
-- Brand consistency + stack fit → **A**.
-- Lowest risk + largest community → **B**.
-- Best visual defaults without brand-strict requirements → **C**.
-- Maximum chart type headroom → **D**.
+Priority was brand consistency and stack fit: the chat UI is already built on shadcn-vue + Tailwind CSS variables, and option A inherits those tokens natively, so the line / bar / pie shapes required by the chat UI theme themselves from the same variables as the rest of the surface. The required chart coverage (line / bar / pie for trends, top-N, and category breakdowns) is fully within scope, and we have no near-term need for exotic chart types that would justify D's bundle cost.
+
+Trade-offs accepted:
+- unovis is younger than Chart.js / ECharts, with a smaller community. If we hit a renderer limitation we'd have to swap out our wrapper components.
+- Swapping renderer later means rewriting our chart wrappers (medium lock-in).
 
 ## Related
 
