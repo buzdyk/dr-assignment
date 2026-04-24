@@ -12,3 +12,4 @@ Numbered sequentially. Append-only — superseded ADRs get a note, never deleted
 | [[006-FRONTEND_TOOLING]] | TypeScript + Vue + Tailwind + shadcn-vue | Accepted |
 | [[007-CHART_LIBRARY]] | shadcn-vue Chart (unovis-vue) | Proposed |
 | [[008-TEXT_TO_SQL]] | AI↔data access — text-to-SQL vs. predefined tools | Accepted |
+| [[009-OVH_SINGLE_VM]] | Single-VM OVH deploy for the demo | Accepted |
