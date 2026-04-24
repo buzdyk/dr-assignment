@@ -1,6 +1,6 @@
 ---
 type: todo
-status: backlog
+status: done
 description: Wire Inter type scale and typography rules into Tailwind config
 ---
 # Typography
@@ -42,3 +42,14 @@ The brand's type system is Inter-based with a specific scale, weight and line-he
 
 - [[../STYLE_GUIDE]]
 - [[../../../adr/006-FRONTEND_TOOLING]]
+
+## What Was Done
+
+Inter loads through `@nuxt/fonts` (Google provider, weights 400/500/700). Tokens live in `demo/app/assets/css/app.css`:
+
+- `--font-sans` (Inter + fallbacks) and `--font-mono` (system mono stack)
+- `--text-h1/h2/h3` with matching `--text-h?--line-height`, `--text-h?--letter-spacing`, `--text-h?--font-weight` as Tailwind v4 token companions
+- `--text-body/small/label` with the body-side line-heights; Label also gets a tracking token
+- Base layer sets `html { font-family: var(--font-sans) }` so body text never has to declare it
+
+Components consume the scale via arbitrary-value utilities: `text-[length:var(--text-h1)] leading-[var(--text-h1--line-height)]`. The Label primitive (`components/ui/Label.vue`) owns the 11px/uppercase/tracked treatment so it's consistent everywhere it's used (card meta, keyboard hints, status indicators).

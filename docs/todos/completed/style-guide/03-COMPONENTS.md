@@ -1,6 +1,6 @@
 ---
 type: todo
-status: backlog
+status: done
 description: Build brand-aligned Card, AI Chat, and Button primitives on shadcn-vue
 ---
 # Components
@@ -50,4 +50,21 @@ The brand guide specifies three component families: Card, AI Chat surface, and B
 - [[01-COLORS]]
 - [[02-TYPOGRAPHY]]
 - [[../../../adr/006-FRONTEND_TOOLING]]
-- [[../../active/CHAT_UI]] — the primary consumer of this work
+- [[../../backlog/CHAT_UI]] — the primary consumer of this work
+
+## What Was Done
+
+Hand-rolled on native elements rather than scaffolded through the shadcn-vue CLI — ADR-006 explicitly allows this, and the components we needed (Card, Button, chat surface) don't require reka-ui's focus/overlay machinery yet. `reka-ui` is installed and ready for CHAT_UI follow-ups that need dropdowns (vendor switcher) or dialogs.
+
+Components under `demo/app/components/`:
+
+- `ui/Button.vue` — `cva` variants: `primary` (teal), `secondary` (hairline), `ghost`, `ai` (lime fill with inline indicator dot). Sizes sm/md/lg. Focus ring resolves to `--color-ring`.
+- `ui/Card.vue` — 4px radius, `--shadow-card`, hairline border. Accepts `as` prop for semantic elements.
+- `ui/Label.vue` — uppercase monospace 11px meta label used for all "SHIPMENT · 00412-8"-style text.
+- `chat/ChatShell.vue` — header (assistant dot + title + status label), scrollable message area, `#input` slot footer. Composes the Card primitive.
+- `chat/ChatMessage.vue` — `role` prop switches between almost-black user bubble and white AI card with lime left-border accent.
+- `chat/ChatInput.vue` — textarea + send button; Enter submits, Shift+Enter newlines; keyboard hints and "AI Ready" indicator rendered below.
+
+Every color/size reference resolves through a token — grep for `#` or `px` in `components/` returns nothing but the docblock comment in `Button.vue` about focus-ring opacity.
+
+`cn()` helper lives at `app/utils/cn.ts` (clsx + tailwind-merge) and is globally auto-imported by Nuxt, so components use it without a local `import`.

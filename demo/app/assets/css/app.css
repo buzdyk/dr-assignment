@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+/*
+ * NexTrade brand tokens — sourced from docs/artefacts/Style Guide_1.png and _2.png.
+ * This is the single source of truth for colors, typography, radius, and shadow.
+ * Components must never reference raw hex or px values — always resolve through a token.
+ */
+
+@theme {
+  /* ─── Colors ─────────────────────────────────────────────────────────── */
+  --color-primary: #008080;            /* Deep Teal — headers, primary buttons, nav */
+  --color-primary-foreground: #ffffff;
+
+  --color-accent: #39ff14;             /* Neon Lime — AI output, loading, critical highlights */
+  --color-accent-foreground: #1a1a1a;
+
+  --color-background: #fbf9fa;         /* Off-White — page background */
+  --color-surface: #ffffff;            /* White — cards, chat surfaces */
+
+  --color-foreground: #1a1a1a;         /* Almost Black — body/content text */
+  --color-muted-foreground: #ac7570;   /* Cool Gray — metadata, secondary text */
+
+  --color-hairline: #e5e7eb;           /* 1px hairline border */
+
+  /* Focus ring: Deep Teal at 12% opacity */
+  --color-ring: color-mix(in srgb, var(--color-primary) 12%, transparent);
+
+  /* ─── Typography ─────────────────────────────────────────────────────── */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+               Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+               "Liberation Mono", monospace;
+
+  /* Header scale — Inter 700, tight tracking for geometric/engineered feel */
+  --text-h1: 60px;
+  --text-h1--line-height: 0.95;
+  --text-h1--letter-spacing: -0.05em;
+  --text-h1--font-weight: 700;
+
+  --text-h2: 36px;
+  --text-h2--line-height: 1;
+  --text-h2--letter-spacing: -0.04em;
+  --text-h2--font-weight: 700;
+
+  --text-h3: 26px;
+  --text-h3--line-height: 1.2;
+  --text-h3--letter-spacing: -0.035em;
+  --text-h3--font-weight: 700;
+
+  /* Body scale — 400–500 weight, 1.5 line-height for sustained data reading */
+  --text-body: 15px;
+  --text-body--line-height: 1.5;
+
+  --text-small: 13px;
+  --text-small--line-height: 1.5;
+
+  --text-label: 11px;
+  --text-label--line-height: 1;
+  --text-label--letter-spacing: 0.08em;
+
+  /* ─── Radius ─────────────────────────────────────────────────────────── */
+  --radius-card: 4px;
+
+  /* ─── Shadow ─────────────────────────────────────────────────────────── */
+  --shadow-card: 0 8px 24px rgb(0 0 0 / 0.08);
+}
+
+/* Base layer — apply background + body treatment globally */
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    color: var(--color-foreground);
+    background-color: var(--color-background);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-weight: 400;
+  }
+
+  /* Label utility renders uppercase by convention (per brand rule 01) */
+  .text-label {
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+}

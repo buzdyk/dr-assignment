@@ -1,6 +1,6 @@
 ---
 type: todo
-status: backlog
+status: done
 description: Wire NexTrade brand colors into Tailwind config as design tokens
 ---
 # Colors
@@ -33,3 +33,9 @@ The brand defines six color tokens the UI must use consistently. They need to li
 
 - [[../STYLE_GUIDE]]
 - [[../../../adr/006-FRONTEND_TOOLING]]
+
+## What Was Done
+
+All six brand tokens landed as Tailwind v4 `@theme` entries in `demo/app/assets/css/app.css`, which is the single source of truth. Tokens are consumed in components via `var(--color-*)` arbitrary values (`bg-[color:var(--color-primary)]` etc.), so no hex literal appears in any `.vue` file outside the style-guide demo page's docblock. The focus-ring token is derived from the primary color at 12% via `color-mix`, matching the brand spec.
+
+Stack diverged slightly from the original todo: we went with Tailwind v4 (CSS-based `@theme`) instead of v3's `tailwind.config.ts`. The intent of the ADR — one source of truth, token-enforced styling — is preserved; the tokens just live in CSS now. ADR-006 stands but the specific `tailwind.config.ts` reference is legacy.
