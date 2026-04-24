@@ -1,4 +1,4 @@
-.PHONY: dev build up down logs migrate migrate-down migrate-list migrate-make seed reset-db db-shell test
+.PHONY: dev build up down logs migrate migrate-down migrate-list migrate-make seed reset-db db-shell test test-unit test-http
 
 dev:
 	docker compose --profile dev up --build dev
@@ -41,3 +41,9 @@ db-shell:
 
 test:
 	docker compose exec dev npm test
+
+test-unit:
+	docker compose exec dev npm run test:unit
+
+test-http:
+	docker compose exec dev npm run test:http
