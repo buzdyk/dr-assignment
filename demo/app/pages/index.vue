@@ -14,11 +14,14 @@ useHead({ title: 'NexTrade' })
       </p>
 
       <div class="mt-8 flex gap-3">
-        <NuxtLink to="/style-guide">
-          <Button variant="primary">Open style guide</Button>
-        </NuxtLink>
         <NuxtLink to="/chat">
-          <Button variant="secondary">Open chat</Button>
+          <Button variant="primary">Open chat</Button>
+        </NuxtLink>
+        <NuxtLink to="/style-guide">
+          <Button variant="secondary">Open style guide</Button>
+        </NuxtLink>
+        <NuxtLink to="/debug">
+          <Button variant="ghost">Tool playground</Button>
         </NuxtLink>
       </div>
     </div>
