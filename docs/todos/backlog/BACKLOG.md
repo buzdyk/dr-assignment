@@ -6,10 +6,9 @@ Future work, not yet scheduled.
 | Todo | Description |
 |------|-------------|
 | [BACKEND_TESTS](./BACKEND_TESTS.md) | Backend test coverage with a provider-abstracted AI interface and a mock provider for deterministic tests |
-| [BYOK_KEY_HANDLING](./BYOK_KEY_HANDLING.md) | Wire the Claude API key from a server-side env var into the Anthropic client |
+| [CHART_LIBRARY_SWAP_TO_UNOVIS](./CHART_LIBRARY_SWAP_TO_UNOVIS.md) | Replace the hand-rolled SVG ResultChart with shadcn-vue Chart on unovis-vue, per ADR-007, or amend the ADR to ratify the SVG choice |
 | [CHAT_POLISH](./CHAT_POLISH.md) | Conversation history, persistence, and multi-turn refinement for the chat endpoint |
-| [CHAT_UI](./CHAT_UI.md) | Minimal chat UI with vendor switcher, consuming the SSE endpoint |
-| [SSE_AI_ENDPOINT](./SSE_AI_ENDPOINT.md) | Nuxt server route that streams Claude responses over SSE |
+| [EXPANDABLE_TOOL_CARD](./EXPANDABLE_TOOL_CARD.md) | Expand a tool card to reveal the raw rows as a table, alongside the existing overview + chart |
 <!-- GENERATED:END -->
 
 _Regenerate with `scripts/todos-index`._

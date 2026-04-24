@@ -1,6 +1,6 @@
 ---
 type: todo
-status: in_progress
+status: done
 description: Full-viewport chat page layout (Sarah's kickoff constraint) — static first cut
 ---
 # Chat Page

@@ -1,6 +1,6 @@
 ---
 type: todo
-status: in_progress
+status: done
 description: AIProvider interface with Claude and Robot implementations
 ---
 # AI Provider

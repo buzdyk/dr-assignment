@@ -1,13 +1,17 @@
 ---
 type: todo
-status: in_progress
-description: Predefined query tools the AI picks from — shared filter shape, five initial tools, server-side vendor scoping
+status: done
+description: Predefined query tools the AI picks from — shared filter shape, one slice per tool, server-side vendor scoping
 ---
 # Query Tools
 
 ## Problem
 
-Per [[../adr/008-TEXT_TO_SQL]] the AI answers by picking a tool from a typed menu rather than generating SQL. Each tool runs a hand-written Kysely query with unit-tested shape. This todo defines the registry layout, the shared filter contract, and the five initial tools covering every question surfaced in [[../artefacts/kickoff_audio_sync]].
+Per [[../adr/008-TEXT_TO_SQL]] the AI answers by picking a tool from a typed menu rather than generating SQL. Each tool runs a hand-written Kysely query with unit-tested shape. This todo defines the registry layout, the shared filter contract, and the initial tools covering every question surfaced in [[../artefacts/kickoff_audio_sync]].
+
+## Shape rule
+
+One tool call = one data slice. Each tool returns a single result set (a `rows` array plus context) that maps cleanly onto one chart shape — bar, line, or pie. Composite answers (deltas between two days, ratios across tools, forecasts) are synthesised by the model on top of these primitives; they are not their own tools. This keeps each tool's SQL, schema, and failure mode trivially auditable.
 
 ## Tool registry
 
@@ -37,7 +41,7 @@ All tools accept — on top of their own specific params — a base filter:
 | `start_date` | string (ISO date, `YYYY-MM-DD`) | no | Inclusive lower bound. Default: 30 days before `end_date` (or 30 days ago if `end_date` absent). |
 | `end_date` | string (ISO date, `YYYY-MM-DD`) | no | Inclusive upper bound. Default: today. |
 
-Tools that operate on specific dates rather than a range (currently only `compare_days`) don't include these fields in their schema. Future extensions to the filter (region, category-level scoping) can be added as optional fields without breaking existing tools.
+Every initial tool accepts this filter; none currently override it. Future extensions to the filter (region, category-level scoping) can be added as optional fields without breaking existing tools.
 
 ## Vendor scoping rule
 
@@ -51,7 +55,17 @@ When a tool computes revenue or amount:
 - Exclude orders whose `status = 'cancelled'` unless the tool is specifically about cancellations.
 - Dates filter on `orders.order_date`.
 
-## The five initial tools
+## The initial tools
+
+Five one-slice tools, mapped to the three chart shapes called out in [[../adr/007-CHART_LIBRARY]]:
+
+| Tool | Chart | Slice |
+|---|---|---|
+| `get_top_n_products` | bar | products ranked |
+| `get_sales_trend` | line | orders over time |
+| `get_category_breakdown` | pie | products by category |
+| `get_revenue_by_region` | bar | customers grouped by region |
+| `get_order_status_mix` | pie | orders grouped by status (includes cancelled) |
 
 ### `get_top_n_products`
 
@@ -63,7 +77,7 @@ Top N of a vendor's products by the given metric over the date range.
 
 ### `get_sales_trend`
 
-Revenue over time, bucketed.
+Revenue over time, bucketed. Also powers composite questions like "Tuesday vs Wednesday" — the model picks the two buckets out of the series and computes the delta on top.
 
 - Model-facing params: `granularity` (enum: `day`, `week`, `month`), plus the shared filter.
 - Returns: `{ rows: [{ bucket, revenue, order_count }], granularity, start_date, end_date }` — `bucket` is an ISO date (the bucket's start).
@@ -77,21 +91,21 @@ Revenue grouped by product category.
 - Returns: `{ rows: [{ category, revenue, order_count, product_count }], start_date, end_date }` sorted revenue desc.
 - SQL shape: group on `p.category`; distinct counts where appropriate.
 
-### `compare_days`
+### `get_revenue_by_region`
 
-Single-metric comparison between two specific dates (Kevin's "Tuesday vs Wednesday" example).
-
-- Model-facing params: `day_a` (ISO date), `day_b` (ISO date), `metric` (enum: `revenue`, `quantity`, `order_count`). **No `start_date`/`end_date`** — this tool overrides the base filter.
-- Returns: `{ day_a: { date, value }, day_b: { date, value }, metric, delta, delta_pct }`.
-- SQL shape: two parameterized single-day aggregates, wrap in a small adapter to compute delta server-side.
-
-### `get_cancellation_rate`
-
-Proportion of orders cancelled in the range, plus the absolute count — no reasons (Dave's landmine).
+Revenue grouped by the *customer's* region — the one slice that hits the `customers` table.
 
 - Model-facing params: the shared filter only.
-- Returns: `{ total_orders, cancelled_orders, cancellation_rate, start_date, end_date }`. No `reason_category` or `detailed_reason` ever leaves this tool even though the columns exist — surfacing them would let the model reconstruct a "why" narrative that [[../reading/03_NO_HALLUCINATION]] forbids.
-- SQL shape: count all orders touching the vendor's products in range, then count the subset with `orders.status = 'cancelled'`. Rate is `cancelled / total`, zero-safe (if total = 0, return rate `null` and explain-in-return, not an error).
+- Returns: `{ rows: [{ region, revenue, order_count, customer_count }], start_date, end_date }` sorted revenue desc.
+- SQL shape: extend the standard join path with `customers c` on `o.customer_id = c.id`, group on `c.region`. Excludes cancelled orders.
+
+### `get_order_status_mix`
+
+Count of orders by status (`placed`, `shipped`, `delivered`, `cancelled`) over the date range. This is the source of record for cancellation-rate questions: the model derives the rate as `cancelled / total_orders` from the returned counts. No `reason_category` or `detailed_reason` ever leaves this tool — surfacing them would let the model reconstruct a "why" narrative that [[../reading/03_NO_HALLUCINATION]] forbids (Dave's landmine).
+
+- Model-facing params: the shared filter only.
+- Returns: `{ rows: [{ status, order_count }], total_orders, start_date, end_date }` sorted count desc.
+- SQL shape: standard join path, *no* status filter (cancelled is included on purpose), group on `o.status`, count distinct order ids.
 
 ## Error and empty handling
 

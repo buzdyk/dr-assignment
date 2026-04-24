@@ -3,10 +3,10 @@
 <!-- GENERATED:START -->
 | Bucket | Description | Count |
 |--------|-------------|-------|
-| [Active](./active/ACTIVE.md) | Work in progress or queued for the current cycle | 4 |
-| [Backlog](./backlog/BACKLOG.md) | Future work, not yet scheduled | 5 |
-| [Icebox](./icebox/ICEBOX.md) | Deferred indefinitely | 0 |
-| [Completed](./completed/COMPLETED.md) | Archive of finished work | 5 |
+| [Active](./active/ACTIVE.md) | Work in progress or queued for the current cycle | 2 |
+| [Backlog](./backlog/BACKLOG.md) | Future work, not yet scheduled | 4 |
+| [Icebox](./icebox/ICEBOX.md) | Deferred indefinitely | 4 |
+| [Completed](./completed/COMPLETED.md) | Archive of finished work | 11 |
 <!-- GENERATED:END -->
 
 _Regenerate with `scripts/todos-index`._

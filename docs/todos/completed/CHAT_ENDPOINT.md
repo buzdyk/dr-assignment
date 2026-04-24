@@ -1,6 +1,6 @@
 ---
 type: todo
-status: in_progress
+status: done
 description: Primary NL→pipeline endpoint — route handler, orchestration loop, vendor-isolation boundary
 ---
 # Chat Endpoint
