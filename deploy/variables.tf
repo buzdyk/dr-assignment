@@ -69,9 +69,8 @@ variable "basic_auth_hash" {
 
 variable "anthropic_api_key" {
   type        = string
-  default     = ""
   sensitive   = true
-  description = "Optional Anthropic API key baked into the server's env. Leave empty to keep the BYOK flow where each operator supplies their own at runtime."
+  description = "Anthropic API key baked into the server's env via cloud-init. Required — see ADR-010."
 }
 
 variable "app_image" {

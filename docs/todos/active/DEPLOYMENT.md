@@ -23,14 +23,14 @@ Goal: publish the demo on a public URL for DR review, from a single OVH Public C
 3. **Terraform apply** ([[deployment/01-OVH_TERRAFORM]]) — provisions the VM with cloud-init baked in as `user_data`. Output is the public IPv4.
 4. **Point DNS** — A record (hostname from `terraform.tfvars`) → `instance_ipv4` output.
 5. **Wait for cloud-init** ([[deployment/02-CLOUD_INIT]]) — Docker installs, compose file + `.env` land on disk, migrations + seeds run, stack starts. Caddy obtains the LE cert once DNS has propagated.
-6. **Smoke test** — `curl -u <user>:<password> https://<domain>/` with the basic-auth creds from `terraform.tfvars`, then walk through a chat turn end-to-end with a BYOK key.
+6. **Smoke test** — `curl -u <user>:<password> https://<domain>/` with the basic-auth creds from `terraform.tfvars`, then walk through a chat turn end-to-end. No key entry needed — the server has one baked in per [[../../adr/010-BAKED_CLAUDE_KEY]].
 
 ## Scope
 
 - Single `b2-7` (or smaller) VM in a European region (`GRA11` default).
 - Postgres runs on the same host, persisted to a named Docker volume on the instance disk.
 - Prod compose override; no source checkout on the VM — only the compose file, the Caddyfile, and `.env`.
-- BYOK stays BYOK — no `ANTHROPIC_API_KEY` shipped to the server.
+- Operator's Anthropic key is baked into the deploy — see [[../../adr/010-BAKED_CLAUDE_KEY]].
 
 ## Out of scope
 
@@ -44,7 +44,7 @@ Goal: publish the demo on a public URL for DR review, from a single OVH Public C
 
 - [[../../adr/009-OVH_SINGLE_VM]] — the platform + shape decision this epic implements.
 - [[../../adr/004-DOCKER_COMPOSE]] — the compose file this epic ships as-is plus a prod override.
-- [[../../adr/002-BYOK_CLAUDE]] — why no Anthropic key is baked into the server image.
+- [[../../adr/010-BAKED_CLAUDE_KEY]] — server-baked Claude key (supersedes [[../../adr/002-BYOK_CLAUDE]]).
 - [[../icebox/CI_GITHUB_ACTIONS]] — future home of the GHCR push step.
 
 ## Open questions

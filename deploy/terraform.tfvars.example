@@ -23,9 +23,8 @@ domain = "REPLACE_ME"
 basic_auth_user = "REPLACE_ME"
 basic_auth_hash = "REPLACE_ME"
 
-# Optional: bake an Anthropic API key into the server env. Leave unset / empty
-# for pure BYOK (each operator supplies their own at runtime).
-# anthropic_api_key = "sk-ant-..."
+# Anthropic API key baked into the server env (see ADR-010 — supersedes BYOK).
+anthropic_api_key = "sk-ant-..."
 
 # ── Overrides (uncomment to change defaults) ───────────────────────────
 # region        = "GRA11"

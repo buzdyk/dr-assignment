@@ -1,12 +1,14 @@
 ---
 type: adr
-status: accepted
+status: superseded
 date: 2026-04-23
 ---
 # ADR-002: BYOK Claude as managed LLM
 
 ## Status
-Accepted
+Superseded by [[010-BAKED_CLAUDE_KEY]] (2026-04-24).
+
+Originally accepted 2026-04-23. The demo's actual shape ([[009-OVH_SINGLE_VM]] — single public URL, handful of reviewers, short window) made BYOK friction that fought the feature being reviewed. ADR-010 records the revised trade-off.
 
 ## Context
 The MVP needs an LLM backend. Self-hosting a model adds infra cost, latency, and complexity irrelevant to the assignment. Bundling a shared API key would require a billing relationship and secret management for a test project that multiple reviewers may run.

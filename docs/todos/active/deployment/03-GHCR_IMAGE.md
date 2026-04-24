@@ -112,7 +112,7 @@ volumes:
 
 `profiles: ["oneoff"]` keeps migrate/seed from coming up on `docker compose up -d` — they're only executed explicitly via `docker compose run --rm migrate` in [[02-CLOUD_INIT]].
 
-`ANTHROPIC_API_KEY` is passed through from `.env` (optional, empty default — see `anthropic_api_key` in `terraform.tfvars`). Matches [[../../../adr/002-BYOK_CLAUDE]]: no key is baked into the image, but the operator running the deploy can optionally bake one in via their own tfvars for reviewer-convenience demos. Pure BYOK (empty value) still works — the user supplies a key at runtime.
+`ANTHROPIC_API_KEY` is passed through from `.env`, sourced from the required `anthropic_api_key` in `terraform.tfvars`. See [[../../../adr/010-BAKED_CLAUDE_KEY]] (supersedes [[../../../adr/002-BYOK_CLAUDE]]).
 
 ## Notes
 
