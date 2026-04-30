@@ -115,9 +115,3 @@ Trade-offs accepted:
 - All future chart-UX growth (hover tooltips, drill-down, animations, zoom, exotic chart types) is on us. Anything beyond the current three shapes either gets hand-rolled or triggers a swap to Option A.
 - No community to crib examples from. Bug-fixing the chart math is a code-reading exercise, not a doc lookup.
 - Lock-in to our own component shape — call sites are coupled to our prop surface, so a future swap means rewriting that surface to match whatever library we adopt.
-
-## Related
-
-- [[006-FRONTEND_TOOLING]] — the shadcn-vue + Tailwind decisions this sits on top of.
-- [[../artefacts/kickoff_audio_sync]] — source of the chart-type requirements.
-- [[../todos/completed/CHAT_UI]] — consumer.

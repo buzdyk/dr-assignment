@@ -57,9 +57,3 @@ This is an explicit time-vs-cleanliness trade. At production scale none of the r
 - **Manual GHCR build + push.** No CI pipeline yet; see [[../todos/icebox/CI_GITHUB_ACTIONS]] for the thaw trigger. The same workflow would eventually own the image push.
 - **Rebuild > patch.** Changing flavor, region, or base OS is destructive (Terraform replaces the instance and loses the DB volume). That's fine — the redeploy path *is* the operational story, and it's fast.
 - **Basic-auth gate on the public URL.** The app has no real auth layer yet; Caddy's `basic_auth` with a shared password is sufficient for a reviewer-only demo. Removing it or swapping for real auth is a one-line Caddyfile change.
-
-## Related
-
-- [[004-DOCKER_COMPOSE]] — the compose shape this deploy reuses, with a prod override.
-- [[002-BYOK_CLAUDE]] — why no `ANTHROPIC_API_KEY` is shipped to the server.
-- [[../todos/active/DEPLOYMENT]] — the epic that implements this ADR.

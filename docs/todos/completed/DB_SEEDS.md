@@ -35,9 +35,3 @@ From [[../../artefacts/kickoff_audio_sync]]:
 - `@faker-js/faker` with a pinned seed (`faker.seed(123)`) for determinism
 - Run via kysely-ctl's seed runner, wired to `npm run db:seed`
 - Idempotent — truncate in dev, or use `on conflict do nothing`
-
-## Related
-
-- [[../../adr/005-DB_TOOLING]]
-- [[DB_MIGRATIONS]]
-- [[../../artefacts/kickoff_audio_sync]]

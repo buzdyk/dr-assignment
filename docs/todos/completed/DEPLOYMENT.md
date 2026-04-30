@@ -40,13 +40,6 @@ Goal: publish the demo on a public URL for DR review, from a single OVH Public C
 - **CI push to GHCR.** Manual build + push for now; see [[../icebox/CI_GITHUB_ACTIONS]] for the thaw trigger — the same workflow would own the push step.
 - **Observability.** No log aggregation, no metrics endpoint beyond Docker + Caddy access logs on the host.
 
-## Related
-
-- [[../../adr/009-OVH_SINGLE_VM]] — the platform + shape decision this epic implements.
-- [[../../adr/004-DOCKER_COMPOSE]] — the compose file this epic ships as-is plus a prod override.
-- [[../../adr/010-BAKED_CLAUDE_KEY]] — server-baked Claude key (supersedes [[../../adr/002-BYOK_CLAUDE]]).
-- [[../icebox/CI_GITHUB_ACTIONS]] — future home of the GHCR push step.
-
 ## Open questions
 
 - **Instance size.** `b2-7` (2 vCPU / 7 GB) is safe with Postgres colocated; `d2-2` (1 vCPU / 2 GB) probably also works. Pick at provisioning; it's a one-line change in `deploy/terraform.tfvars`.

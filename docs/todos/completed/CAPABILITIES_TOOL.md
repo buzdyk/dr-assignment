@@ -44,9 +44,3 @@ Lives at `demo/server/ai/tools/list-capabilities.ts`, registered in `tools/index
 - Per-vendor scoping of capabilities (all vendors see all tools today; nothing to filter).
 - Showing `input_schema` in the UI — rows carry only `name` + `description` for now. Schema introspection is a follow-up if someone asks for it.
 - A natural-language tutorial/help flow — this is a flat list, not a walkthrough.
-
-## Related
-
-- [[EXPANDABLE_TOOL_CARD]] — once shipped, the capability rows render as a real table in the expanded card
-- [[../active/CLAUDE_PROVIDER_ADAPT]] — the provider this tool calls through; no provider change needed, just registry addition
-- [[../completed/SSE_AI_ENDPOINT]] — the envelope shape `chart` lives on

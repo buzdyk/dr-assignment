@@ -26,8 +26,3 @@ If the shadcn-vue Charts docs are still flaky when this is picked up, fall back 
 - A chart shape outside the current three (line / bar / pie) is needed.
 - The hand-rolled SVG math becomes a maintenance burden — multiple bug fixes pile up around scaling, axis labelling, or aspect ratios.
 - Bundle weight stops being a consideration (e.g. the rest of the app gains heavy deps anyway).
-
-## Related
-
-- [[../../adr/007-CHART_LIBRARY]] — the amended decision (Option G chosen, this is the documented fallback)
-- [[../completed/CHAT_UI]] — the consumer where this was originally bundled

@@ -27,9 +27,3 @@ The NexTrade database schema needs to be set up via Kysely migrations scaffolded
 - Indexes worth adding up front: `products.vendor_id`, `orders.customer_id`, `orders.order_date`, `order_items.order_id`, `order_items.product_id`
 - Mirror every migration in the hand-maintained `Database` TS interface (`db/types.ts`) that Kysely consumes
 - Document the `kysely-ctl migrate` invocation in the project README
-
-## Related
-
-- [[../../adr/005-DB_TOOLING]]
-- [[../../adr/004-DOCKER_COMPOSE]]
-- [[DB_SEEDS]]

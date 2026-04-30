@@ -7,7 +7,7 @@ description: Full-viewport chat page layout (Sarah's kickoff constraint) — sta
 
 ## Problem
 
-The product needs a dedicated chat page where the chat surface dominates the viewport — not a tiny sidebar. This todo owns the layout, header composition, and vendor-switcher placement. Wiring to the real endpoint lives in [[../backlog/CHAT_UI]].
+The product needs a dedicated chat page where the chat surface dominates the viewport — not a tiny sidebar. This todo owns the layout, header composition, and vendor-switcher placement. Wiring to the real endpoint lives in [[CHAT_UI]].
 
 First cut is static — canned messages only, no fetch calls — so we can eyeball the composition before the data layer arrives.
 
@@ -28,13 +28,6 @@ From [[../../artefacts/kickoff_audio_sync]]:
 
 ## Out of scope
 
-- Real fetch to `/api/chat` → [[../backlog/CHAT_UI]]
+- Real fetch to `/api/chat` → [[CHAT_UI]]
 - Chart rendering from tool results → [[../../adr/007-CHART_LIBRARY]]
-- Multi-turn, persistence → [[../backlog/CHAT_POLISH]]
-
-## Related
-
-- [[../backlog/CHAT_UI]] — wires this static page to the live endpoint
-- [[../../adr/006-FRONTEND_TOOLING]]
-- [[../../adr/007-CHART_LIBRARY]]
-- [[../completed/style-guide/03-COMPONENTS]] — component styling for the chat shell lives here
+- Multi-turn, persistence → [[../icebox/CHAT_POLISH]]

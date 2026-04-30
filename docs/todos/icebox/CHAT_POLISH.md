@@ -19,9 +19,3 @@ Open questions, not a decision:
 - **Context window management.** Trim/summarize old turns once the prompt gets long. Not a concern until real usage hits it.
 - **Conversation identifiers.** A `conversation_id` field on requests — generated client-side or server-side on first message?
 - **Replay of tool results.** Do we re-send prior `tool_result` blocks on each turn, or summarize them back as assistant prose to save tokens?
-
-## Related
-
-- [[../completed/CHAT_ENDPOINT]] — the stateless first cut this polishes
-- [[../../adr/008-TEXT_TO_SQL]]
-- [[../../artefacts/kickoff_audio_sync]]

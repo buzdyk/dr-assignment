@@ -45,16 +45,7 @@ One function in `server/ai/runner.ts`. Takes the provider, system prompt, messag
 
 ## Out of scope
 
-- Multi-turn conversation history (stays single-shot, per [[../backlog/CHAT_POLISH]]).
+- Multi-turn conversation history (stays single-shot, per [[../icebox/CHAT_POLISH]]).
 - Multi-hop tool loops (single pick → execute → summarize only).
 - Persisting chat history.
 - True token-level streaming for Robot (we fake it by chunking).
-
-## Related
-
-- [[../../adr/003-SSE_FOR_AI_STREAMING]]
-- [[../../adr/002-BYOK_CLAUDE]]
-- [[../../adr/007-CHART_LIBRARY]]
-- [[CHAT_UI]] — the consumer of this endpoint
-- [[../backlog/BACKEND_TESTS]] — the provider split makes the mock-provider test plan much cheaper
-- [[../backlog/BYOK_KEY_HANDLING]]

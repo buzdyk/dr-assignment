@@ -48,9 +48,3 @@ Nuxt is already locked in by [[001-NUXT_FULL_STACK]], which implies Vue and (by 
 - **Dark mode is not in scope for MVP.** The brand guide's "Background — App: Off-White" implies a light-only palette. Add later if needed via Tailwind's built-in dark variants.
 - **Chart library is a separate decision.** shadcn-vue does not ship charts. Options (Chart.js, ECharts, Recharts-equivalents for Vue) will be picked when [[../todos/completed/CHAT_UI]] kicks off.
 - **reka-ui is a transitive dependency we're trusting.** It's the current evolution of Radix Vue and actively maintained, but we inherit whatever bugs it has.
-
-## Related
-
-- [[001-NUXT_FULL_STACK]] — implies Vue and TS.
-- [[../artefacts/kickoff_audio_sync]] — source of the brand constraints.
-- [[../todos/completed/CHAT_UI]] — consumer of this stack; also where the chart-library decision will land.

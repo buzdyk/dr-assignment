@@ -11,8 +11,8 @@ A minimal chat surface that exercises the SSE path end-to-end, demonstrates tena
 
 ## Approach
 
-- Single page with the chat surface dominating the viewport (per Sarah's kickoff constraint — details captured in [[../backlog/CHAT_PAGE]]).
-- **Vendor switcher** — dropdown in the header that switches between `Supplier 1` / `Supplier 2` (stable UUIDs seeded in [[../backlog/DB_SEEDS]]). Selection is the tenant identity sent with every query; the server uses it to inject `vendor_id` into tool calls. Alex explicitly promised Dave this as the "data isolation proof" during the Friday demo.
+- Single page with the chat surface dominating the viewport (per Sarah's kickoff constraint — details captured in [[CHAT_PAGE]]).
+- **Vendor switcher** — dropdown in the header that switches between `Supplier 1` / `Supplier 2` (stable UUIDs seeded in [[DB_SEEDS]]). Selection is the tenant identity sent with every query; the server uses it to inject `vendor_id` into tool calls. Alex explicitly promised Dave this as the "data isolation proof" during the Friday demo.
 - Message list + input box.
 - On submit: POST the prompt + current vendor id, open a streaming read on the response body, and mutate the latest assistant bubble as SSE events arrive.
 
@@ -35,14 +35,5 @@ The AI's final summary renders below all tool cards. `text` chunks append to the
 ## Out of scope
 
 - Persistence / history across page reloads.
-- Multi-turn conversation memory (single-shot per prompt, per [[../backlog/CHAT_POLISH]]).
+- Multi-turn conversation memory (single-shot per prompt, per [[../icebox/CHAT_POLISH]]).
 - Re-running / editing prior messages.
-
-## Related
-
-- [[SSE_AI_ENDPOINT]] — the transport and event shapes this consumes
-- [[../backlog/DB_SEEDS]]
-- [[../../adr/007-CHART_LIBRARY]]
-- [[../../adr/008-TEXT_TO_SQL]]
-- [[../backlog/CHAT_PAGE]] — layout breakdown (tbd)
-- [[../backlog/STYLE_GUIDE]] — component styling

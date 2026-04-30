@@ -99,12 +99,6 @@ output "ssh_command"   { value = "ssh ubuntu@${local.ipv4}" }
 - **No firewall rules** beyond what cloud-init's UFW config sets ([[02-CLOUD_INIT]]) — OVH Public Cloud instances are open by default. 22 / 80 / 443 only; Postgres is never exposed.
 - **Image name collisions.** The `ovh_cloud_project_images` data source returns every `linux` image for the region. `one([... if i.name == var.image_name])` errors if multiple images share the exact name — tighten the filter (e.g. add `flavor_type == null` for the universal variant) if that happens.
 
-## Related
-
-- [[02-CLOUD_INIT]] — the `user_data` this module templates.
-- [[../DEPLOYMENT]] — parent epic.
-- [[../../../adr/009-OVH_SINGLE_VM]] — why OVH, why a single VM.
-
 ## What Was Done
 
 Landed as `deploy/main.tf`, `variables.tf`, `outputs.tf` plus `terraform.tfvars.example`. Uses the `ovh/ovh ~> 2.6` provider with the `ovh_cloud_project_flavors` / `ovh_cloud_project_images` data sources to look IDs up by name, a `random_password` for the Postgres credential, and an `ovh_cloud_project_instance` whose `user_data` is rendered from `cloud-init.yaml.tftpl`. Outputs `instance_ipv4` and `ssh_command` as planned. State stays local (`deploy/terraform.tfstate`); the provider lock file was committed in 644ca64 for reproducible `terraform init`. `make cloud-plan` / `cloud-apply` / `cloud-destroy` / `cloud-ip` / `cloud-ssh` wrap the common flows from the repo root.

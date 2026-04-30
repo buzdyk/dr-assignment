@@ -41,9 +41,3 @@ If multi-vendor model selection is ever needed (one vendor on Opus, another on H
 - New Claude model release we want to deploy without a code change.
 - Need to A/B compare two model versions.
 - A reviewer or partner wants to point the same code at a different model locally.
-
-## Related
-
-- [[../completed/CLAUDE_PROVIDER_ADAPT]] — where the hardcoded values live
-- [[../../adr/002-BYOK_CLAUDE]] — adjacent env-config decision
-- [[SELF_HOSTED_MODEL_PROVIDER]] — would introduce its own `LOCAL_MODEL_NAME` env var following the same pattern

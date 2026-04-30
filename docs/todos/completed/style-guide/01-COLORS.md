@@ -29,11 +29,6 @@ The brand defines six color tokens the UI must use consistently. They need to li
 - Override any shadcn-vue preset grays that conflict with the NexTrade palette
 - Lint / grep rule against raw hex values in component files
 
-## Related
-
-- [[../STYLE_GUIDE]]
-- [[../../../adr/006-FRONTEND_TOOLING]]
-
 ## What Was Done
 
 All six brand tokens landed as Tailwind v4 `@theme` entries in `demo/app/assets/css/app.css`, which is the single source of truth. Tokens are consumed in components via `var(--color-*)` arbitrary values (`bg-[color:var(--color-primary)]` etc.), so no hex literal appears in any `.vue` file outside the style-guide demo page's docblock. The focus-ring token is derived from the primary color at 12% via `color-mix`, matching the brand spec.

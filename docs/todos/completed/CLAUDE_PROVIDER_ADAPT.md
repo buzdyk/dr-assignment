@@ -27,11 +27,3 @@ Error handling wraps each call in `ProviderError`; the runner maps those to the 
 
 - Claude loses its native multi-hop tool loop — we only do one pick → execute-all → summarize per request. Multi-hop can be revisited as a separate todo if a real user query needs it. See [[../icebox/MULTI_HOP_TOOL_LOOP]].
 - Reconstructing tool calls as prose rather than tool_use / tool_result blocks drifts from the Anthropic convention. Accepted because the deterministic `overview` covers the per-tool narration in the UI; Claude only needs enough context to write the conversational summary.
-
-## Related
-
-- [[../completed/SSE_AI_ENDPOINT]] — the interface and runner this fills in
-- [[../completed/BYOK_KEY_HANDLING]] — env wiring + fail-fast already in place
-- [[../../adr/003-SSE_FOR_AI_STREAMING]]
-- [[../../adr/002-BYOK_CLAUDE]]
-- [[../icebox/CLAUDE_MODEL_CONFIGURABLE]] — extracting the hardcoded model to env

@@ -32,9 +32,4 @@ The data is already there — `block.rows` is on the envelope and currently pass
 - Sortable / filterable table (just render in source order).
 - Column type inference (numbers vs dates vs strings — leave as stringified).
 - Column hiding / pinning.
-- CSV export — that's a [[../icebox/CHART_INTERACTIVITY]]-shaped conversation if it ever comes up.
-
-## Related
-
-- [[../completed/CHAT_UI]] — the spec where this was originally bundled and dropped
-- [[../completed/SSE_AI_ENDPOINT]] — the envelope that already carries `rows`
+- CSV export — that's a chart-interactivity-shaped conversation if it ever comes up.

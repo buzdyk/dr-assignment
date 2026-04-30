@@ -84,10 +84,3 @@ Trade-off accepted: new question shapes (regional breakdowns, seasonality, etc.)
 ## Decision
 
 **Option B — predefined query tools.** Each tool takes typed params; `vendor_id` is injected server-side from the tenant picker so the AI can never reach across vendors. The MVP menu covers every query shape from the kickoff artefacts; new shapes are a one-file change. Implementation lives under `demo/server/ai/tools/`, with `list_capabilities` exposing the menu to the model.
-
-## Related
-
-- [[005-DB_TOOLING]] — the query layer these tools will be built on (Kysely).
-- [[../reading/01_CLAUDE_CAPABILITIES]] — tool-use mechanics in the Anthropic SDK.
-- [[../reading/03_NO_HALLUCINATION]] — how the guardrails work in practice, including against this project's cancellation-reasons case.
-- [[../artefacts/kickoff_audio_sync]] — source of the example queries and the isolation / no-hallucination constraints.

@@ -93,12 +93,6 @@ Seeds run once on first boot only. The seed files truncate + reseed and are idem
 - **Re-running.** `cloud-init clean && cloud-init init` re-executes user-data locally, useful while iterating. Don't rely on it in production — destroy + re-apply is the clean path.
 - **Secrets in user-data.** OVH stores `user_data` in plaintext against the project metadata, so the generated Postgres password is readable to anyone with project access. Acceptable for a demo with no real user data. No GHCR token lives here — images are public.
 
-## Related
-
-- [[01-OVH_TERRAFORM]] — the Terraform that renders and attaches this template.
-- [[03-GHCR_IMAGE]] — the image + compose override this script pulls.
-- [[04-TLS_AND_DNS]] — the Caddyfile dropped alongside the compose file.
-
 ## What Was Done
 
 `deploy/cloud-init.yaml.tftpl` ships the four planned stages: Docker CE install via the official apt repo, UFW (22/80/443 only), `write_files` for `/opt/app/docker-compose.yml`, `Caddyfile`, `.env`, and `bootstrap.sh`, and a `runcmd` invocation that pulls the `oneoff` profile, runs migrate + seed, then `up -d`. The `.env` is rendered with the Terraform-generated Postgres password, the operator's Anthropic key, the basic-auth pair, and the GHCR image refs. `make cloud-logs` tails `/var/log/cloud-init-output.log` over SSH for first-boot debugging.

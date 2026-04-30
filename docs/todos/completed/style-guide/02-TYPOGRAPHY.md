@@ -38,11 +38,6 @@ The brand's type system is Inter-based with a specific scale, weight and line-he
 - Add custom utility classes if base Tailwind can't express the letter-spacing + weight combos cleanly
 - Visual diff against the Style Guide image once a sample page exists
 
-## Related
-
-- [[../STYLE_GUIDE]]
-- [[../../../adr/006-FRONTEND_TOOLING]]
-
 ## What Was Done
 
 Inter loads through `@nuxt/fonts` (Google provider, weights 400/500/700). Tokens live in `demo/app/assets/css/app.css`:

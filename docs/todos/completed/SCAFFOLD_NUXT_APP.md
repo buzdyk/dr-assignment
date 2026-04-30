@@ -18,7 +18,3 @@ The app lives in `/demo` (not the repo root) so assignment docs, ADRs, and devlo
 - Verify default template boots via `npm run dev` on the host machine
 - Follow-up: minimal landing page that will later host the chat UI
 - Follow-up: health-check server route to prove Nitro is wired up
-
-## Related
-
-- [[../../adr/001-NUXT_FULL_STACK]]

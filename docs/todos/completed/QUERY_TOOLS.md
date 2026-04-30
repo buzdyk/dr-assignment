@@ -7,7 +7,7 @@ description: Predefined query tools the AI picks from — shared filter shape, o
 
 ## Problem
 
-Per [[../adr/008-TEXT_TO_SQL]] the AI answers by picking a tool from a typed menu rather than generating SQL. Each tool runs a hand-written Kysely query with unit-tested shape. This todo defines the registry layout, the shared filter contract, and the initial tools covering every question surfaced in [[../artefacts/kickoff_audio_sync]].
+Per [[../../adr/008-TEXT_TO_SQL]] the AI answers by picking a tool from a typed menu rather than generating SQL. Each tool runs a hand-written Kysely query with unit-tested shape. This todo defines the registry layout, the shared filter contract, and the initial tools covering every question surfaced in [[../../artefacts/kickoff_audio_sync]].
 
 ## Shape rule
 
@@ -57,7 +57,7 @@ When a tool computes revenue or amount:
 
 ## The initial tools
 
-Five one-slice tools, mapped to the three chart shapes called out in [[../adr/007-CHART_LIBRARY]]:
+Five one-slice tools, mapped to the three chart shapes called out in [[../../adr/007-CHART_LIBRARY]]:
 
 | Tool | Chart | Slice |
 |---|---|---|
@@ -101,7 +101,7 @@ Revenue grouped by the *customer's* region — the one slice that hits the `cust
 
 ### `get_order_status_mix`
 
-Count of orders by status (`placed`, `shipped`, `delivered`, `cancelled`) over the date range. This is the source of record for cancellation-rate questions: the model derives the rate as `cancelled / total_orders` from the returned counts. No `reason_category` or `detailed_reason` ever leaves this tool — surfacing them would let the model reconstruct a "why" narrative that [[../reading/03_NO_HALLUCINATION]] forbids (Dave's landmine).
+Count of orders by status (`placed`, `shipped`, `delivered`, `cancelled`) over the date range. This is the source of record for cancellation-rate questions: the model derives the rate as `cancelled / total_orders` from the returned counts. No `reason_category` or `detailed_reason` ever leaves this tool — surfacing them would let the model reconstruct a "why" narrative that [[../../reading/03_NO_HALLUCINATION]] forbids (Dave's landmine).
 
 - Model-facing params: the shared filter only.
 - Returns: `{ rows: [{ status, order_count }], total_orders, start_date, end_date }` sorted count desc.
@@ -121,13 +121,4 @@ The substring-matched canned prompts in [[AI_PROVIDER]] exercise at least one ex
 
 - New tools for regional breakdowns, seasonality, customer-segmenting — added when the need appears; one-file changes.
 - Row-level security — current mechanism is per-query `WHERE`; RLS may come later.
-- Tool-call provenance logging → [[../reading/03_NO_HALLUCINATION]] section 6, post-MVP.
-
-## Related
-
-- [[CHAT_ENDPOINT]] — what binds the executor to `ToolContext` and loops over tool calls
-- [[AI_PROVIDER]] — what hands the tool specs to the model
-- [[../adr/008-TEXT_TO_SQL]]
-- [[../adr/005-DB_TOOLING]]
-- [[../reading/03_NO_HALLUCINATION]]
-- [[../artefacts/kickoff_audio_sync]]
+- Tool-call provenance logging → [[../../reading/03_NO_HALLUCINATION]] section 6, post-MVP.

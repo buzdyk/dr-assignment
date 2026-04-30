@@ -52,9 +52,3 @@ Active-Record-with-models ORMs have no TS-first, well-maintained, Nuxt-friendly 
 - **Migrations are TS files** scaffolded by `kysely-ctl`, using Kysely's `Migrator` under the hood. Up/down functions called through the CLI.
 - **Seeders are typed TS scripts** — `Insertable<DB['table']>` types catch column mistakes at compile time. Pair with `@faker-js/faker` for volume, pin a faker seed for deterministic demo data.
 - **Escape hatch for raw SQL** is Kysely's `sql` template tag, which embeds parameterized SQL cleanly — relevant to the forthcoming text-to-SQL tool layer.
-
-## Related
-
-- [[004-DOCKER_COMPOSE]] — Postgres will be a second service in the compose file.
-- [[../artefacts/kickoff_audio_sync]] — source of the "two-supplier demo + tenant isolation" requirement that drives the seed scripts.
-- [[../reading/02_JS_DB_TOOLING]] — broader tooling landscape this decision sits inside.

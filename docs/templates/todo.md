@@ -8,5 +8,3 @@ description: one-line summary shown in the index
 ## Problem
 
 ## Approach
-
-## Related

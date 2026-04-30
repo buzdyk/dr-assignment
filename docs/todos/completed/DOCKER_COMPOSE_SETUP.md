@@ -24,9 +24,3 @@ The Nuxt `app`/`dev` services and multi-stage Dockerfile were in place, but the 
 - `app` service (production runtime) and `dev` profile (hot reload via bind-mount)
 - `PORT` env override wired through to both services
 - `Makefile` with `make dev` / `make build` targets
-
-## Related
-
-- [[../../adr/004-DOCKER_COMPOSE]]
-- [[../../adr/005-DB_TOOLING]]
-- [[DB_MIGRATIONS]]

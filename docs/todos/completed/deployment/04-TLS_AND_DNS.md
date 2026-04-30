@@ -95,12 +95,6 @@ The app streams chat responses over SSE ([[../../../adr/003-SSE_FOR_AI_STREAMING
 - **Port 3455 exposure.** The `app` service does NOT publish port 3455 in the prod compose — it's only reachable via the Docker network. Caddy is the sole public entry point. Matches the UFW rules in [[02-CLOUD_INIT]] (80 + 443 + 22 only).
 - **Cert persistence on instance replacement.** Terraform replacing the VM ([[01-OVH_TERRAFORM]] flavor or region change) loses the `caddy-data` volume, so LE re-issues. Fine at demo scale; mention if we ever hit rate limits.
 
-## Related
-
-- [[02-CLOUD_INIT]] — writes the Caddyfile + sets the UFW rules Caddy depends on.
-- [[03-GHCR_IMAGE]] — the compose override Caddy lives inside.
-- [[../../../adr/003-SSE_FOR_AI_STREAMING]] — the streaming semantics Caddy must not break.
-
 ## What Was Done
 
 `deploy/Caddyfile` is the three-line site block planned: `{$DOMAIN}` site, `basic_auth` gated on `{$BASIC_AUTH_USER}` / `{$BASIC_AUTH_HASH}`, `reverse_proxy app:3455`, gzip, console logs. The Caddy sidecar in `deploy/docker-compose.prod.yml` exposes 80/443, mounts `caddy-data` + `caddy-config` for cert persistence, and reads the env vars cloud-init writes to `/opt/app/.env` (origin: `terraform.tfvars`). Hostname, basic-auth user, and bcrypt hash stay out of the repo entirely. DNS A record remains a manual step after `terraform apply` — Caddy waits out propagation and ACME-issues on its own.

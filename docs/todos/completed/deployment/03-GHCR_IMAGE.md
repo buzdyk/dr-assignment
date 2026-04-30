@@ -120,12 +120,6 @@ volumes:
 - **Image size.** The migrate image carries dev deps and `db/` — ~300 MB. Fine. Not worth optimizing until CI exists.
 - **Architecture.** OVH `b2-7` is x86_64. Build single-arch (`--platform linux/amd64`) to skip buildx multi-platform overhead. If you're on Apple Silicon, this matters — `docker build` without `--platform` produces arm64 which will `exec format error` on the VM.
 
-## Related
-
-- [[02-CLOUD_INIT]] — consumes these images.
-- [[../../completed/DB_MIGRATIONS]] / [[../../completed/DB_SEEDS]] — the commands the migrate image wraps.
-- [[../../icebox/CI_GITHUB_ACTIONS]] — where the manual build + push should eventually live.
-
 ## What Was Done
 
 `demo/Dockerfile` gained the planned `migrate` stage on top of `deps`. `deploy/docker-compose.prod.yml` is the standalone prod override that cloud-init drops at `/opt/app/docker-compose.yml` — Postgres with healthcheck, `app` pulling `${APP_IMAGE}`, profile-gated `migrate` + `seed` services on `${MIGRATE_IMAGE}`, and the Caddy sidecar. `make cloud-build` / `cloud-push` drive single-arch (`linux/amd64`) buildx pushes to `ghcr.io/buzdyk/dr-assignment` and `…-migrate` with both `:latest` and `:<short-sha>` tags. Packages flipped to public so the VM pulls without credentials.

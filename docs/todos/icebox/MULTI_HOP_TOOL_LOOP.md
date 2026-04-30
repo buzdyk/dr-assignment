@@ -8,7 +8,7 @@ reason: No user query yet needs it; current single-shot pick → execute → sum
 
 ## Problem
 
-The current runner ([[../../../demo/server/ai/runner.ts]]) is single-shot: `pickTools` returns one batch of tool calls, the runner executes all of them, and `summarize` produces the final text. Claude can't see a tool's result and decide to call another tool based on it. That rules out queries like:
+The current runner (`demo/server/ai/runner.ts`) is single-shot: `pickTools` returns one batch of tool calls, the runner executes all of them, and `summarize` produces the final text. Claude can't see a tool's result and decide to call another tool based on it. That rules out queries like:
 
 - "Which region drove the cancellation spike?" → first look at `get_order_status_mix`, see cancellations are concentrated in EU, then call `get_revenue_by_region` filtered to those orders.
 - "Compare top product revenue against the category trend" → fetch top products, then fetch category breakdown for whichever category the leader belongs to.
@@ -69,9 +69,3 @@ Real `tool_use` / `tool_result` blocks (not the prose reconstruction in [[../com
 - A real user query needs cross-tool reasoning.
 - Single-shot summary quality drops because Claude can't pick a tool informed by another tool's output.
 - The synthetic-prose tool-result reconstruction in [[../completed/CLAUDE_PROVIDER_ADAPT]] visibly degrades summaries.
-
-## Related
-
-- [[../completed/CLAUDE_PROVIDER_ADAPT]] — the current single-shot Claude adapter; this supersedes its provider interface
-- [[../completed/SSE_AI_ENDPOINT]] — defined the original `pickTools` + `summarize` split
-- [[../../adr/008-TEXT_TO_SQL]]

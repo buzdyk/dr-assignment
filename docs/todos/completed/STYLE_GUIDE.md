@@ -21,13 +21,8 @@ Translation of the three NexTrade brand-guide images (`docs/artefacts/Style Guid
 - **Typography** → Inter type scale, three header rules, body/mono treatment.
 - **Components** → Card, AI Chat surface, Button variants built on shadcn-vue + reka-ui, restyled with the brand tokens above.
 
-## Related
-
-- [[../../adr/006-FRONTEND_TOOLING]] — the Vue + Tailwind + shadcn-vue stack these tokens and components build on.
-- [[../../artefacts/kickoff_audio_sync]] — Sarah's brand-strict constraint this epic exists to honor.
-
 ## What Was Done
 
 All three children landed: tokens in CSS `@theme`, Inter loaded, Card/Button/Chat primitives hand-rolled on native elements + Tailwind utilities. A living `/style-guide` page at `demo/app/pages/style-guide.vue` mirrors the three brand artefacts as a visual regression reference and doubles as the place to eyeball any future token change.
 
-Further UI primitives (dropdown for vendor switcher, dialogs, tooltips) will get scaffolded via reka-ui when [[../backlog/CHAT_UI]] needs them — the stack is ready.
+Further UI primitives (dropdown for vendor switcher, dialogs, tooltips) will get scaffolded via reka-ui when [[CHAT_UI]] needs them — the stack is ready.

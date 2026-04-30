@@ -44,14 +44,6 @@ The brand guide specifies three component families: Card, AI Chat surface, and B
 - Focus and keyboard semantics inherit from reka-ui
 - Expect to split this todo when work starts — at least Card / Buttons / Chat shell / Chat message / Chat input will each want their own file
 
-## Related
-
-- [[../STYLE_GUIDE]]
-- [[01-COLORS]]
-- [[02-TYPOGRAPHY]]
-- [[../../../adr/006-FRONTEND_TOOLING]]
-- [[../../backlog/CHAT_UI]] — the primary consumer of this work
-
 ## What Was Done
 
 Hand-rolled on native elements rather than scaffolded through the shadcn-vue CLI — ADR-006 explicitly allows this, and the components we needed (Card, Button, chat surface) don't require reka-ui's focus/overlay machinery yet. `reka-ui` is installed and ready for CHAT_UI follow-ups that need dropdowns (vendor switcher) or dialogs.
